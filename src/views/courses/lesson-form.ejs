@@ -1,0 +1,70 @@
+<div class="section-header">
+  <h2><i class="fa-solid fa-film"></i> Modifier la leçon</h2>
+  <a href="/courses/<%= courseId %>" class="btn btn-ghost btn-sm">← Retour à la formation</a>
+</div>
+
+<form action="/courses/<%= courseId %>/modules/<%= moduleId %>/lessons/<%= lesson.id %>" method="POST" enctype="multipart/form-data" class="form card">
+  <div class="form-row">
+    <div class="form-group">
+      <label>Titre</label>
+      <input type="text" name="title" required value="<%= lesson.title %>">
+    </div>
+    <div class="form-group">
+      <label>Type</label>
+      <select name="type">
+        <% ['video','pdf','article','code_demo'].forEach(function(t) { %>
+          <option value="<%= t %>" <%= lesson.type === t ? 'selected' : '' %>><%= t %></option>
+        <% }) %>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label>Ordre</label>
+      <input type="number" name="order" value="<%= lesson.order %>">
+    </div>
+    <div class="form-group">
+      <label>Durée (min)</label>
+      <input type="number" name="durationMin" value="<%= lesson.durationMin %>">
+    </div>
+    <div class="form-group">
+      <label>XP</label>
+      <input type="number" name="xpReward" value="<%= lesson.xpReward %>">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Remplacer le fichier (laisse vide pour garder l'actuel)</label>
+    <input type="file" name="content" accept="video/*,.pdf">
+    <% if (lesson.contentUrl) { %>
+      <p class="form-hint">Fichier actuel : <a href="<%= lesson.contentUrl %>" target="_blank"><%= lesson.contentUrl %></a></p>
+    <% } %>
+  </div>
+
+  <div class="form-group">
+    <label>Contenu texte (Markdown — pour articles ou complément de cours)</label>
+    <textarea name="articleContent" rows="6"><%= lesson.articleContent || '' %></textarea>
+    <p class="form-hint">Ce texte peut être affiché à côté d'un widget Flutter, ou utilisé par le tuteur IA comme contexte pédagogique.</p>
+  </div>
+
+  <div class="form-group">
+    <label>Contenu enrichi avancé (JSON — séquence de blocs)</label>
+    <textarea name="blocksJson" rows="8"><%= blocksJsonPretty %></textarea>
+    <p class="form-hint">
+      Structure libre, par exemple :
+      <code>[{"type":"text","content":"Explication..."},{"type":"animation","asset":"https://.../anim.json"},{"type":"quiz_inline","exerciseId":"..."}]</code>
+    </p>
+  </div>
+
+  <div class="form-checkbox">
+    <input type="checkbox" name="isPreview" id="isPreview" <%= lesson.isPreview ? 'checked' : '' %>>
+    <label for="isPreview">Leçon en aperçu gratuit</label>
+  </div>
+  <div class="form-checkbox">
+    <input type="checkbox" name="isDownloadable" id="isDownloadable" <%= lesson.isDownloadable ? 'checked' : '' %>>
+    <label for="isDownloadable">Téléchargeable hors-ligne</label>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+</form>

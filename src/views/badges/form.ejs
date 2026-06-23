@@ -1,0 +1,48 @@
+<div class="section-header">
+  <h2>Nouveau badge</h2>
+  <a href="/badges" class="btn btn-ghost btn-sm">← Retour</a>
+</div>
+
+<form action="/badges" method="POST" enctype="multipart/form-data" class="form card">
+  <div class="form-group">
+    <label for="name">Nom du badge</label>
+    <input type="text" name="name" id="name" required>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea name="description" id="description" rows="3"></textarea>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="category">Catégorie</label>
+      <select name="category" id="category">
+        <option value="learning">Apprentissage</option>
+        <option value="social">Social</option>
+        <option value="achievement">Accomplissement</option>
+        <option value="certification">Certification</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="rarity">Rareté</label>
+      <select name="rarity" id="rarity">
+        <option value="common">Commun</option>
+        <option value="rare">Rare</option>
+        <option value="epic">Épique</option>
+        <option value="legendary">Légendaire</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="xpBonus">Bonus XP</label>
+      <input type="number" name="xpBonus" id="xpBonus" value="10">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="icon">Icône</label>
+    <input type="file" name="icon" id="icon" accept="image/*">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Créer le badge</button>
+</form>

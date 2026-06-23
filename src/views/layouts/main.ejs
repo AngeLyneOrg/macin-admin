@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> — MACIN Admin</title>
+  <link rel="icon" type="image/png" href="/img/logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <% if (currentUser) { %>
+    <div class="app-shell">
+      <%- include('../partials/sidebar') %>
+      <div class="app-main">
+        <%- include('../partials/topbar') %>
+        <main class="app-content">
+          <%- include('../partials/flash') %>
+          <%- body %>
+        </main>
+      </div>
+    </div>
+  <% } else { %>
+    <main class="auth-content">
+      <%- include('../partials/flash') %>
+      <%- body %>
+    </main>
+  <% } %>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

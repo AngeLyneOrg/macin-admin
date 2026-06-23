@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="UTF-8"><title>Erreur serveur</title><link rel="stylesheet" href="/css/style.css"></head>
+<body>
+  <div class="error-page">
+    <h1>500</h1>
+    <p>Une erreur est survenue.</p>
+    <pre class="error-detail"><%= error && error.message ? error.message : '' %></pre>
+    <a href="/" class="btn btn-primary">Retour à l'accueil</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,7 @@
+<%
+  var _label = (typeof label !== 'undefined' && label) ? label : 'Supprimer';
+  var _confirmText = (typeof confirmText !== 'undefined' && confirmText) ? confirmText : 'Supprimer cet élément ?';
+%>
+<form action="<%= action %>" method="POST" class="inline-form" onsubmit="return confirm('<%= _confirmText.replace(/'/g, "\\'") %>');">
+  <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i> <%= _label %></button>
+</form>

@@ -1,0 +1,13 @@
+<a href="/courses/<%= course.id %>" class="course-card">
+  <div class="course-thumb" style="background-image: url('<%= course.thumbnailUrl || '/img/placeholder.png' %>')">
+    <span class="badge <%= course.isPublished ? 'badge-success' : 'badge-muted' %>">
+      <%= course.isPublished ? 'Publié' : 'Brouillon' %>
+    </span>
+  </div>
+  <div class="course-card-body">
+    <h3 class="course-card-title"><%= course.title %></h3>
+    <p class="course-card-meta">
+      <%= course.totalLessons || 0 %> leçons · <%= course.totalDurationMin || 0 %> min · <%= course.level %>
+    </p>
+  </div>
+</a>

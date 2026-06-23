@@ -1,0 +1,38 @@
+<div class="section-header">
+  <h2>Formateurs</h2>
+  <a href="/instructors/new" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Nouveau formateur</a>
+</div>
+
+<% if (instructors.length === 0) { %>
+  <%- include('../partials/empty-state', {
+    icon: 'fa-solid fa-chalkboard-user',
+    title: 'Aucun formateur enregistré',
+    ctaHref: '/instructors/new',
+    ctaLabel: 'Ajouter un formateur'
+  }) %>
+<% } else { %>
+  <table class="data-table card">
+    <thead>
+      <tr><th></th><th>Nom</th><th>Email</th><th></th></tr>
+    </thead>
+    <tbody>
+      <% instructors.forEach(function(inst) { %>
+        <tr>
+          <td>
+            <% if (inst.photoUrl) { %>
+              <img src="<%= inst.photoUrl %>" class="avatar-sm" alt="">
+            <% } else { %>
+              <span class="avatar-placeholder"><%= inst.displayName ? inst.displayName[0].toUpperCase() : '?' %></span>
+            <% } %>
+          </td>
+          <td><%= inst.displayName %></td>
+          <td><%= inst.email %></td>
+          <td class="actions-cell">
+            <a href="/instructors/<%= inst.id %>/edit" class="btn btn-ghost btn-sm"><i class="fa-solid fa-pen"></i> Modifier</a>
+            <%- include('../partials/delete-button', { action: `/instructors/${inst.id}/delete`, confirmText: 'Supprimer ce formateur ?' }) %>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>

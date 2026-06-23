@@ -1,0 +1,31 @@
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <img src="/img/logo.png" alt="MACIN" class="auth-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <span class="brand-mark auth-mark" style="display:none;">M</span>
+    </div>
+    <h1 class="auth-title">Bienvenue sur MACIN Admin</h1>
+    <p class="auth-subtitle">Connecte-toi pour gérer tes formations</p>
+
+    <form action="/login" method="POST" class="form">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <div class="input-icon">
+          <i class="fa-solid fa-envelope"></i>
+          <input type="email" name="email" id="email" required autofocus placeholder="admin@macin.com">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <div class="input-icon">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" name="password" id="password" required placeholder="••••••••">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">
+        <i class="fa-solid fa-arrow-right-to-bracket"></i> Se connecter
+      </button>
+    </form>
+  </div>
+  <p class="auth-footer">MACIN — Plateforme d'E-Formation Intelligente</p>
+</div>
