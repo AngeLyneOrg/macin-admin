@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
+const MemoryStore = require('memorystore')(session);
 const flash = require('connect-flash');
 const methodOverride = require('method-override');
 const expressLayouts = require('express-ejs-layouts');
@@ -27,11 +28,20 @@ app.use(express.json());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Session avec MemoryStore compatible production (pas de fuite mémoire)
 app.use(session({
   secret: process.env.SESSION_SECRET || 'dev-secret-change-me',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 1000 * 60 * 60 * 8 }, // 8h
+  store: new MemoryStore({
+    checkPeriod: 1000 * 60 * 60 * 8, // nettoyage toutes les 8h
+  }),
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 8, // 8h
+    secure: process.env.NODE_ENV === 'production', // HTTPS uniquement en prod
+    httpOnly: true,
+    sameSite: 'lax',
+  },
 }));
 app.use(flash());
 
