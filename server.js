@@ -8,7 +8,6 @@ const flash = require('connect-flash');
 const methodOverride = require('method-override');
 const expressLayouts = require('express-ejs-layouts');
 
-// S'assure que Firebase est initialisé tôt (échoue vite si mal configuré)
 require('./src/config/firebase');
 
 const authRoutes = require('./src/routes/auth');
@@ -28,17 +27,19 @@ app.use(express.json());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Session avec MemoryStore compatible production (pas de fuite mémoire)
+// Nécessaire pour que les cookies sécurisés fonctionnent derrière le proxy Render
+app.set('trust proxy', 1);
+
 app.use(session({
   secret: process.env.SESSION_SECRET || 'dev-secret-change-me',
   resave: false,
   saveUninitialized: false,
   store: new MemoryStore({
-    checkPeriod: 1000 * 60 * 60 * 8, // nettoyage toutes les 8h
+    checkPeriod: 1000 * 60 * 60 * 8,
   }),
   cookie: {
-    maxAge: 1000 * 60 * 60 * 8, // 8h
-    secure: process.env.NODE_ENV === 'production', // HTTPS uniquement en prod
+    maxAge: 1000 * 60 * 60 * 8,
+    secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
     sameSite: 'lax',
   },
