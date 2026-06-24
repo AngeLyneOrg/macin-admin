@@ -1,10 +1,18 @@
 <header class="topbar">
-  <h1 class="topbar-title"><%= title %></h1>
+  <div class="topbar-left">
+    <button class="hamburger" aria-label="Ouvrir le menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <h1 class="topbar-title"><%= title %></h1>
+  </div>
   <div class="topbar-user">
     <span class="user-avatar"><%= currentUser.email[0].toUpperCase() %></span>
     <span class="user-email"><%= currentUser.email %></span>
     <form action="/logout" method="POST">
-      <button type="submit" class="btn btn-ghost btn-sm"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</button>
+      <button type="submit" class="btn btn-ghost btn-sm">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Déconnexion</span>
+      </button>
     </form>
   </div>
 </header>

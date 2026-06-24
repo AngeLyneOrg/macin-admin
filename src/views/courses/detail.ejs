@@ -39,29 +39,31 @@
     <% if (mod.lessons.length === 0) { %>
       <p class="text-muted">Aucune leçon dans ce module.</p>
     <% } else { %>
-      <table class="data-table">
-        <thead>
-          <tr><th>#</th><th>Titre</th><th>Type</th><th>Durée</th><th>Aperçu</th><th></th></tr>
-        </thead>
-        <tbody>
-          <% mod.lessons.forEach(function(lesson) { %>
-            <tr>
-              <td><%= lesson.order %></td>
-              <td><%= lesson.title %></td>
-              <td><span class="badge badge-muted"><%= lesson.type %></span></td>
-              <td><%= lesson.durationMin %> min</td>
-              <td><%= lesson.isPreview ? '✓' : '—' %></td>
-              <td class="actions-cell">
-                <a href="/courses/<%= course.id %>/modules/<%= mod.id %>/lessons/<%= lesson.id %>/edit" class="btn btn-ghost btn-sm"><i class="fa-solid fa-pen"></i></a>
-                <%- include('../partials/delete-button', {
-                  action: `/courses/${course.id}/modules/${mod.id}/lessons/${lesson.id}/delete`,
-                  confirmText: 'Supprimer cette leçon ?', label: ''
-                }) %>
-              </td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr><th>#</th><th>Titre</th><th>Type</th><th>Durée</th><th>Aperçu</th><th>Actions</th></tr>
+          </thead>
+          <tbody>
+            <% mod.lessons.forEach(function(lesson) { %>
+              <tr>
+                <td data-label="Ordre"><%= lesson.order %></td>
+                <td data-label="Titre"><%= lesson.title %></td>
+                <td data-label="Type"><span class="badge badge-muted"><%= lesson.type %></span></td>
+                <td data-label="Durée"><%= lesson.durationMin %> min</td>
+                <td data-label="Aperçu"><%= lesson.isPreview ? '✓' : '—' %></td>
+                <td data-label="Actions" class="actions-cell">
+                  <a href="/courses/<%= course.id %>/modules/<%= mod.id %>/lessons/<%= lesson.id %>/edit" class="btn btn-ghost btn-sm"><i class="fa-solid fa-pen"></i></a>
+                  <%- include('../partials/delete-button', {
+                    action: `/courses/${course.id}/modules/${mod.id}/lessons/${lesson.id}/delete`,
+                    confirmText: 'Supprimer cette leçon ?', label: ''
+                  }) %>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
     <% } %>
 
     <details class="add-lesson-form">
@@ -101,12 +103,12 @@
           <input type="file" name="content" accept="video/*,.pdf">
         </div>
         <div class="form-group">
-          <label>Contenu texte (Markdown — pour articles ou complément de cours)</label>
-          <textarea name="articleContent" rows="4" placeholder="## Titre&#10;Texte explicatif en Markdown, lu par le tuteur IA et affiché à côté du widget..."></textarea>
+          <label>Contenu texte (Markdown)</label>
+          <textarea name="articleContent" rows="4" placeholder="## Titre&#10;Texte explicatif en Markdown..."></textarea>
         </div>
         <div class="form-group">
-          <label>Contenu enrichi avancé (JSON — blocs texte/animation/quiz pour tes widgets Flutter)</label>
-          <textarea name="blocksJson" rows="4" placeholder='[{"type":"text","content":"..."},{"type":"animation","asset":"..."}]'></textarea>
+          <label>Contenu enrichi (JSON — blocs Flutter)</label>
+          <textarea name="blocksJson" rows="3" placeholder='[{"type":"text","content":"..."}]'></textarea>
           <p class="form-hint">Optionnel. Laisse vide si tu n'en as pas besoin maintenant.</p>
         </div>
         <div class="form-checkbox">
@@ -117,36 +119,38 @@
       </form>
     </details>
 
-    <!-- Exercices / Quiz / Examens -->
-    <h5 style="margin-top: 22px;"><i class="fa-solid fa-clipboard-question"></i> Exercices, Quiz &amp; Examens</h5>
+    <!-- Exercices -->
+    <h5 style="margin-top:22px;"><i class="fa-solid fa-clipboard-question"></i> Exercices, Quiz &amp; Examens</h5>
     <% if (mod.exercises.length === 0) { %>
       <p class="text-muted">Aucun exercice dans ce module.</p>
     <% } else { %>
-      <table class="data-table">
-        <thead>
-          <tr><th>#</th><th>Titre</th><th>Type</th><th>Questions</th><th>Seuil</th><th></th></tr>
-        </thead>
-        <tbody>
-          <% mod.exercises.forEach(function(ex) { %>
-            <tr>
-              <td><%= ex.order %></td>
-              <td><%= ex.title %></td>
-              <td><span class="badge badge-primary"><%= ex.type %></span></td>
-              <td><%= ex.questions ? ex.questions.length : 0 %></td>
-              <td><%= ex.passingScore %>%</td>
-              <td class="actions-cell">
-                <a href="/courses/<%= course.id %>/modules/<%= mod.id %>/exercises/<%= ex.id %>/edit" class="btn btn-ghost btn-sm"><i class="fa-solid fa-pen"></i></a>
-                <%- include('../partials/delete-button', {
-                  action: `/courses/${course.id}/modules/${mod.id}/exercises/${ex.id}/delete`,
-                  confirmText: 'Supprimer cet exercice ?', label: ''
-                }) %>
-              </td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr><th>#</th><th>Titre</th><th>Type</th><th>Questions</th><th>Seuil</th><th>Actions</th></tr>
+          </thead>
+          <tbody>
+            <% mod.exercises.forEach(function(ex) { %>
+              <tr>
+                <td data-label="Ordre"><%= ex.order %></td>
+                <td data-label="Titre"><%= ex.title %></td>
+                <td data-label="Type"><span class="badge badge-primary"><%= ex.type %></span></td>
+                <td data-label="Questions"><%= ex.questions ? ex.questions.length : 0 %></td>
+                <td data-label="Seuil"><%= ex.passingScore %>%</td>
+                <td data-label="Actions" class="actions-cell">
+                  <a href="/courses/<%= course.id %>/modules/<%= mod.id %>/exercises/<%= ex.id %>/edit" class="btn btn-ghost btn-sm"><i class="fa-solid fa-pen"></i></a>
+                  <%- include('../partials/delete-button', {
+                    action: `/courses/${course.id}/modules/${mod.id}/exercises/${ex.id}/delete`,
+                    confirmText: 'Supprimer cet exercice ?', label: ''
+                  }) %>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
     <% } %>
-    <a href="/courses/<%= course.id %>/modules/<%= mod.id %>/exercises/new" class="btn btn-ghost btn-sm" style="margin-top: 10px;">
+    <a href="/courses/<%= course.id %>/modules/<%= mod.id %>/exercises/new" class="btn btn-ghost btn-sm" style="margin-top:10px;">
       <i class="fa-solid fa-plus"></i> Ajouter un exercice / quiz / examen
     </a>
   </div>

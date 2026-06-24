@@ -25,7 +25,6 @@
         <% }) %>
       </select>
     </div>
-
     <div class="form-group">
       <label for="price">Prix (0 = gratuit)</label>
       <input type="number" name="price" id="price" min="0" step="100" value="<%= course ? course.price : 0 %>">
@@ -59,7 +58,7 @@
     <% } %>
   </div>
 
-  <div class="form-group form-checkbox">
+  <div class="form-checkbox">
     <input type="checkbox" name="isPublished" id="isPublished" <%= course && course.isPublished ? 'checked' : '' %>>
     <label for="isPublished">Publier cette formation (visible dans l'application mobile)</label>
   </div>

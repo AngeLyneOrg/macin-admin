@@ -11,28 +11,30 @@
     ctaLabel: 'Ajouter un formateur'
   }) %>
 <% } else { %>
-  <table class="data-table card">
-    <thead>
-      <tr><th></th><th>Nom</th><th>Email</th><th></th></tr>
-    </thead>
-    <tbody>
-      <% instructors.forEach(function(inst) { %>
-        <tr>
-          <td>
-            <% if (inst.photoUrl) { %>
-              <img src="<%= inst.photoUrl %>" class="avatar-sm" alt="">
-            <% } else { %>
-              <span class="avatar-placeholder"><%= inst.displayName ? inst.displayName[0].toUpperCase() : '?' %></span>
-            <% } %>
-          </td>
-          <td><%= inst.displayName %></td>
-          <td><%= inst.email %></td>
-          <td class="actions-cell">
-            <a href="/instructors/<%= inst.id %>/edit" class="btn btn-ghost btn-sm"><i class="fa-solid fa-pen"></i> Modifier</a>
-            <%- include('../partials/delete-button', { action: `/instructors/${inst.id}/delete`, confirmText: 'Supprimer ce formateur ?' }) %>
-          </td>
-        </tr>
-      <% }) %>
-    </tbody>
-  </table>
+  <div class="table-scroll card">
+    <table class="data-table">
+      <thead>
+        <tr><th></th><th>Nom</th><th>Email</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        <% instructors.forEach(function(inst) { %>
+          <tr>
+            <td data-label="Photo">
+              <% if (inst.photoUrl) { %>
+                <img src="<%= inst.photoUrl %>" class="avatar-sm" alt="">
+              <% } else { %>
+                <span class="avatar-placeholder"><%= inst.displayName ? inst.displayName[0].toUpperCase() : '?' %></span>
+              <% } %>
+            </td>
+            <td data-label="Nom"><%= inst.displayName %></td>
+            <td data-label="Email"><%= inst.email %></td>
+            <td data-label="Actions" class="actions-cell">
+              <a href="/instructors/<%= inst.id %>/edit" class="btn btn-ghost btn-sm"><i class="fa-solid fa-pen"></i> Modifier</a>
+              <%- include('../partials/delete-button', { action: `/instructors/${inst.id}/delete`, confirmText: 'Supprimer ce formateur ?' }) %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
 <% } %>
