@@ -1,4 +1,4 @@
-<a href="/courses/<%= course.id %>" class="course-card">
+<a href="/dashboard/courses/<%= course.id %>" class="course-card">
   <div class="course-thumb" style="background-image: url('<%= course.thumbnailUrl || '/img/placeholder.png' %>')">
     <span class="badge <%= course.isPublished ? 'badge-success' : 'badge-muted' %>">
       <%= course.isPublished ? 'Publié' : 'Brouillon' %>

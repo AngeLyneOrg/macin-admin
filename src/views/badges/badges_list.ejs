@@ -1,0 +1,25 @@
+<div class="section-header">
+  <h2>Badges</h2>
+  <a href="/dashboard/badges/new" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Nouveau badge</a>
+</div>
+
+<% if (badges.length === 0) { %>
+  <%- include('../partials/empty-state', {
+    icon: 'fa-solid fa-medal',
+    title: 'Aucun badge créé',
+    ctaHref: '/badges/new',
+    ctaLabel: 'Créer un badge'
+  }) %>
+<% } else { %>
+  <div class="badge-grid">
+    <% badges.forEach(function(b) { %>
+      <div class="badge-card">
+        <% if (b.iconUrl) { %><img src="<%= b.iconUrl %>" alt="" class="badge-icon"><% } %>
+        <h4><%= b.name %></h4>
+        <p class="text-muted"><%= b.description %></p>
+        <span class="badge badge-muted"><%= b.rarity %> · +<%= b.xpBonus %> XP</span>
+        <%- include('../partials/delete-button', { action: `/dashboard/badges/${b.id}/delete`, confirmText: 'Supprimer ce badge ?' }) %>
+      </div>
+    <% }) %>
+  </div>
+<% } %>

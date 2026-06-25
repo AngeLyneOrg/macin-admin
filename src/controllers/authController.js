@@ -8,7 +8,7 @@ function login(req, res) {
   if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
     req.session.isAdmin = true;
     req.session.adminEmail = email;
-    return res.redirect('/');
+    return res.redirect('/dashboard');
   }
 
   req.flash('error', 'Email ou mot de passe incorrect.');

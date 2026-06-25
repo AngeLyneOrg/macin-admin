@@ -21,7 +21,7 @@ async function create(req, res, next) {
     }
     await badgeService.createBadge({ ...req.body, iconUrl });
     req.flash('success', 'Badge créé.');
-    res.redirect('/badges');
+    res.redirect('/dashboard/badges');
   } catch (err) { next(err); }
 }
 
@@ -29,7 +29,7 @@ async function remove(req, res, next) {
   try {
     await badgeService.deleteBadge(req.params.badgeId);
     req.flash('success', 'Badge supprimé.');
-    res.redirect('/badges');
+    res.redirect('/dashboard/badges');
   } catch (err) { next(err); }
 }
 

@@ -57,7 +57,7 @@ app.use((req, res, next) => {
 
 // ── Routes ─────────────────────────────────────────────────
 app.use('/', authRoutes);
-app.use('/', mainRoutes);
+app.use('/dashboard', mainRoutes);
 
 // ── 404 ────────────────────────────────────────────────────
 app.use((req, res) => {

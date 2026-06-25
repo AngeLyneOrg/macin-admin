@@ -25,7 +25,7 @@ async function create(req, res, next) {
     }
     const courseId = await courseService.createCourse({ ...req.body, thumbnailUrl });
     req.flash('success', 'Formation créée avec succès.');
-    res.redirect(`/courses/${courseId}`);
+    res.redirect(`/dashboard/courses/${courseId}`);
   } catch (err) { next(err); }
 }
 
@@ -34,7 +34,7 @@ async function detail(req, res, next) {
     const course = await courseService.getCourse(req.params.courseId);
     if (!course) {
       req.flash('error', 'Formation introuvable.');
-      return res.redirect('/courses');
+      return res.redirect('/dashboard/courses');
     }
     const modules = await courseService.listModules(course.id);
     const exerciseService = require('../services/exerciseService');
@@ -61,7 +61,7 @@ async function showEditForm(req, res, next) {
     const course = await courseService.getCourse(req.params.courseId);
     if (!course) {
       req.flash('error', 'Formation introuvable.');
-      return res.redirect('/courses');
+      return res.redirect('/dashboard/courses');
     }
     const instructors = await instructorService.listInstructors();
     res.render('courses/form', { title: `Modifier — ${course.title}`, course, instructors });
@@ -77,7 +77,7 @@ async function update(req, res, next) {
     }
     await courseService.updateCourse(req.params.courseId, data);
     req.flash('success', 'Formation mise à jour.');
-    res.redirect(`/courses/${req.params.courseId}`);
+    res.redirect(`/dashboard/courses/${req.params.courseId}`);
   } catch (err) { next(err); }
 }
 
@@ -85,7 +85,7 @@ async function remove(req, res, next) {
   try {
     await courseService.deleteCourse(req.params.courseId);
     req.flash('success', 'Formation supprimée.');
-    res.redirect('/courses');
+    res.redirect('/dashboard/courses');
   } catch (err) { next(err); }
 }
 
@@ -95,7 +95,7 @@ async function createModule(req, res, next) {
   try {
     await courseService.createModule(req.params.courseId, req.body);
     req.flash('success', 'Module ajouté.');
-    res.redirect(`/courses/${req.params.courseId}`);
+    res.redirect(`/dashboard/courses/${req.params.courseId}`);
   } catch (err) { next(err); }
 }
 
@@ -103,7 +103,7 @@ async function removeModule(req, res, next) {
   try {
     await courseService.deleteModule(req.params.courseId, req.params.moduleId);
     req.flash('success', 'Module supprimé.');
-    res.redirect(`/courses/${req.params.courseId}`);
+    res.redirect(`/dashboard/courses/${req.params.courseId}`);
   } catch (err) { next(err); }
 }
 
@@ -122,7 +122,7 @@ async function createLesson(req, res, next) {
 
     await courseService.createLesson(courseId, moduleId, data);
     req.flash('success', 'Leçon ajoutée.');
-    res.redirect(`/courses/${courseId}`);
+    res.redirect(`/dashboard/courses/${courseId}`);
   } catch (err) { next(err); }
 }
 
@@ -132,7 +132,7 @@ async function showEditLessonForm(req, res, next) {
     const lesson = await courseService.getLesson(courseId, moduleId, lessonId);
     if (!lesson) {
       req.flash('error', 'Leçon introuvable.');
-      return res.redirect(`/courses/${courseId}`);
+      return res.redirect(`/dashboard/courses/${courseId}`);
     }
     res.render('courses/lesson-form', {
       title: `Modifier — ${lesson.title}`,
@@ -155,7 +155,7 @@ async function updateLesson(req, res, next) {
 
     await courseService.updateLesson(courseId, moduleId, lessonId, data);
     req.flash('success', 'Leçon mise à jour.');
-    res.redirect(`/courses/${courseId}`);
+    res.redirect(`/dashboard/courses/${courseId}`);
   } catch (err) { next(err); }
 }
 
@@ -164,7 +164,7 @@ async function removeLesson(req, res, next) {
     const { courseId, moduleId, lessonId } = req.params;
     await courseService.deleteLesson(courseId, moduleId, lessonId);
     req.flash('success', 'Leçon supprimée.');
-    res.redirect(`/courses/${courseId}`);
+    res.redirect(`/dashboard/courses/${courseId}`);
   } catch (err) { next(err); }
 }
 

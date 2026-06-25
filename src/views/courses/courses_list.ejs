@@ -1,0 +1,19 @@
+<div class="section-header">
+  <h2>Toutes les formations</h2>
+  <a href="/dashboard/courses/new" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Nouvelle formation</a>
+</div>
+
+<% if (courses.length === 0) { %>
+  <%- include('../partials/empty-state', {
+    icon: 'fa-solid fa-book-open',
+    title: 'Aucune formation pour le moment',
+    ctaHref: '/courses/new',
+    ctaLabel: 'Créer une formation'
+  }) %>
+<% } else { %>
+  <div class="course-grid">
+    <% courses.forEach(function(course) { %>
+      <%- include('../partials/course-card', { course }) %>
+    <% }) %>
+  </div>
+<% } %>

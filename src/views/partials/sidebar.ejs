@@ -12,16 +12,16 @@
   </div>
 
   <nav class="sidebar-nav">
-    <a href="/" class="nav-link <%= currentPath === '/' ? 'active' : '' %>">
+    <a href="/dashboard" class="nav-link <%= (currentPath === '/' || currentPath === '/dashboard') ? 'active' : '' %>">
       <i class="fa-solid fa-chart-line nav-icon"></i> Tableau de bord
     </a>
-    <a href="/courses" class="nav-link <%= currentPath.startsWith('/courses') ? 'active' : '' %>">
+    <a href="/dashboard/courses" class="nav-link <%= currentPath.startsWith('/dashboard/courses') ? 'active' : '' %>">
       <i class="fa-solid fa-book-open nav-icon"></i> Formations
     </a>
-    <a href="/instructors" class="nav-link <%= currentPath.startsWith('/instructors') ? 'active' : '' %>">
+    <a href="/dashboard/instructors" class="nav-link <%= currentPath.startsWith('/dashboard/instructors') ? 'active' : '' %>">
       <i class="fa-solid fa-chalkboard-user nav-icon"></i> Formateurs
     </a>
-    <a href="/badges" class="nav-link <%= currentPath.startsWith('/badges') ? 'active' : '' %>">
+    <a href="/dashboard/badges" class="nav-link <%= currentPath.startsWith('/dashboard/badges') ? 'active' : '' %>">
       <i class="fa-solid fa-medal nav-icon"></i> Badges
     </a>
   </nav>
