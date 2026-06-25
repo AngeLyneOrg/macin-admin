@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MACIN — Plateforme d'E-Formation Intelligente</title>
+  <meta name="description" content="MACIN, votre coach éducatif entraîné sur l'IA. Cours certifiants, assistant IA, disponible sur Android.">
+  <link rel="icon" href="/img/favicon-32.png" type="image/png">
+  <link rel="stylesheet" href="/css/landing.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<!-- ══ LEFT SIDEBAR ══ -->
+<nav class="sidebar">
+  <a href="/" class="sidebar-brand">
+    <img src="/img/logo.png" alt="MACIN" onerror="this.style.display='none'">
+    <span class="sidebar-logo-text">MACIN</span>
+  </a>
+
+  <nav class="sidebar-nav">
+    <a href="#hero">Accueil</a>
+    <a href="#maci">MACI IA</a>
+    <a href="#features">Fonctionnalités</a>
+    <a href="#download">Télécharger</a>
+  </nav>
+
+  <a href="/login" class="sidebar-admin" title="Administration">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
+    </svg>
+    <span>Admin</span>
+  </a>
+</nav>
+
+<!-- ══ RIGHT SOCIAL BAR ══ -->
+<div class="social-bar">
+  <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+  <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+  <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+  <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+</div>
+
+<!-- ══ PAGE WRAP ══ -->
+<div class="page-wrap">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <ul class="topbar-links">
+      <li><a href="#maci">MACI IA</a></li>
+      <li><a href="#features">Fonctionnalités</a></li>
+      <li>
+        <a href="#download" class="btn-dl">
+          <i class="fa-brands fa-google-play"></i> Télécharger
+        </a>
+      </li>
+    </ul>
+  </header>
+
+  <!-- ══ HERO ══ -->
+  <section class="hero" id="hero">
+    <div class="hero-text">
+      <div class="hero-eyebrow">
+        <span>🤖</span>
+        <span>Propulsé par l'Intelligence Artificielle</span>
+      </div>
+
+      <h1 class="hero-title">
+        MACIN : votre coach<br>
+        éducatif, <em>entraîné<br>sur l'IA</em>
+      </h1>
+
+      <p class="hero-subtitle">
+        MACIN est une plateforme d'apprentissage en ligne qui offre une variété
+        de cours, de formations et de certifications pour vous aider à améliorer
+        vos compétences et atteindre vos objectifs académiques.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#features" class="btn-outline">
+          <i class="fa-solid fa-circle-info"></i> En savoir plus
+        </a>
+      </div>
+
+      <div class="store-badges" id="download">
+        <a href="<%= apkUrl || '#' %>" class="badge-store<%= apkUrl ? '' : ' disabled' %>">
+          <span class="badge-store-icon">🤖</span>
+          <div class="badge-store-text">
+            <small>Télécharger sur</small>
+            <strong>Android APK</strong>
+          </div>
+        </a>
+        <a href="#" class="badge-store disabled" title="Bientôt disponible">
+          <span class="badge-store-icon"></span>
+          <div class="badge-store-text">
+            <small>Bientôt sur</small>
+            <strong>App Store</strong>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Phone image — mettre phone.png dans public/img/phone.png -->
+    <div class="hero-visual">
+      <div class="float-pill top-left">
+        <span class="pill-dot"></span>
+        Formation Flutter active
+      </div>
+
+      <img
+              src="/img/phone.png"
+              alt="Application MACIN sur téléphone"
+              class="hero-phone-img"
+              onerror="this.style.opacity='0'"
+      >
+
+      <div class="float-pill bot-right">
+        🏆 Badge obtenu !
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ MACI SECTION ══ -->
+  <section class="maci-section" id="maci">
+    <!-- MACI character — mettre maci.png dans public/img/maci.png -->
+    <div class="maci-visual">
+      <div class="maci-glow"></div>
+      <div class="maci-badge">
+        <i class="fa-solid fa-robot"></i> Assistant IA actif
+      </div>
+      <img
+              src="/img/maci.png"
+              alt="MACI, l'assistant IA de MACIN"
+              class="maci-img"
+              onerror="this.style.opacity='0'"
+      >
+    </div>
+
+    <div class="maci-text">
+      <span class="section-eyebrow">Intelligence Artificielle Intégrée</span>
+      <h2 class="section-title">Rencontrez MACI,<br>votre coach personnel IA</h2>
+      <p class="section-body">
+        MACI est l'intelligence artificielle locale intégrée à MACIN. Elle analyse
+        votre progression, répond à vos questions en temps réel et adapte le contenu
+        à votre niveau — même sans connexion internet.
+      </p>
+
+      <div class="maci-chips">
+        <span class="chip">🧠 Disponible hors-ligne</span>
+        <span class="chip">💬 Réponses instantanées</span>
+        <span class="chip">📈 Suivi personnalisé</span>
+        <span class="chip">🎯 Adapté à votre niveau</span>
+      </div>
+
+      <a href="#download" class="btn-primary">
+        <i class="fa-brands fa-google-play"></i> Essayer MACIN
+      </a>
+    </div>
+  </section>
+
+  <!-- ══ FEATURES ══ -->
+  <section class="features" id="features">
+    <div class="section-header">
+      <span class="section-eyebrow">Ce que MACIN vous offre</span>
+      <h2 class="section-title">Nos Fonctionnalités</h2>
+      <p class="section-sub">Une expérience d'apprentissage complète, intelligente et accessible partout.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <h3>Assistant IA (MACI)</h3>
+        <p>Intelligence artificielle locale qui guide votre apprentissage et répond à toutes vos questions, 24h/24 même hors connexion.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎓</div>
+        <h3>Cours Certifiants</h3>
+        <p>Obtenez des certifications reconnues qui valoriseront votre CV et attesteront de vos compétences acquises.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📱</div>
+        <h3>Multi-Plateforme</h3>
+        <p>Accédez à vos cours depuis n'importe quel appareil, à tout moment, même sans connexion internet.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Exercices Interactifs</h3>
+        <p>Quiz, défis de code et projets pratiques pour consolider vos connaissances à chaque étape.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏅</div>
+        <h3>Système de Badges</h3>
+        <p>Débloquez des badges au fil de votre progression pour rester motivé et valoriser votre parcours.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Suivi de Progression</h3>
+        <p>Visualisez votre avancement en temps réel et identifiez les domaines où concentrer vos efforts.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CTA ══ -->
+  <section class="cta-band">
+    <h2>Prêt à transformer votre apprentissage ?</h2>
+    <p>Téléchargez MACIN dès maintenant et commencez votre première formation gratuitement.</p>
+    <div class="store-badges">
+      <a href="<%= apkUrl || '#' %>" class="badge-store<%= apkUrl ? '' : ' disabled' %>">
+        <span class="badge-store-icon">🤖</span>
+        <div class="badge-store-text">
+          <small>Télécharger sur</small>
+          <strong>Android APK</strong>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div>
+        <a href="/" class="footer-brand">
+          <img src="/img/logo.png" alt="MACIN">
+          <span>MACIN</span>
+        </a>
+        <p class="footer-desc">La plateforme d'e-formation intelligente propulsée par l'IA pour booster votre carrière.</p>
+        <div class="footer-socials">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <a href="#hero">Accueil</a>
+        <a href="#maci">MACI IA</a>
+        <a href="#features">Fonctionnalités</a>
+        <a href="#download">Télécharger</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Légal</h4>
+        <a href="#">Politique de confidentialité</a>
+        <a href="#">Conditions d'utilisation</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; <%= new Date().getFullYear() %> MACIN — CamiaEDU. Tous droits réservés.</span>
+      <div style="display:flex;gap:16px;">
+        <a href="#">Confidentialité</a>
+        <a href="#">Conditions</a>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /page-wrap -->
+</body>
+</html>
