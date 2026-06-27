@@ -12,6 +12,7 @@ require('./src/config/firebase');
 
 const authRoutes = require('./src/routes/auth');
 const mainRoutes = require('./src/routes/index');
+const adminRoutes = require('./src/routes/admin');
 
 const app = express();
 
@@ -58,6 +59,7 @@ app.use((req, res, next) => {
 // ── Routes ─────────────────────────────────────────────────
 app.use('/', authRoutes);
 app.use('/dashboard', mainRoutes);
+app.use('/admin', adminRoutes);
 
 // ── 404 ────────────────────────────────────────────────────
 app.use((req, res) => {

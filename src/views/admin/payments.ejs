@@ -1,0 +1,100 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Paiements</h1>
+    <p class="page-sub">Historique complet des transactions</p>
+  </div>
+  <div class="page-actions">
+    <div class="filter-row">
+      <select id="statusFilter" onchange="filterPayments()" class="select-sm">
+        <option value="">Tous les statuts</option>
+        <option value="paid">Payé</option>
+        <option value="pending">En attente</option>
+        <option value="failed">Échoué</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Revenue summary -->
+<div class="admin-kpi-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 24px;">
+  <div class="kpi-card kpi-green">
+    <div class="kpi-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+    <div class="kpi-body">
+      <div class="kpi-value"><%= summary.totalRevenue.toLocaleString('fr-FR') %> XAF</div>
+      <div class="kpi-label">Revenus totaux</div>
+    </div>
+  </div>
+  <div class="kpi-card kpi-blue">
+    <div class="kpi-icon"><i class="fa-solid fa-circle-check"></i></div>
+    <div class="kpi-body">
+      <div class="kpi-value"><%= summary.paidCount %></div>
+      <div class="kpi-label">Paiements confirmés</div>
+    </div>
+  </div>
+  <div class="kpi-card kpi-orange">
+    <div class="kpi-icon"><i class="fa-solid fa-clock"></i></div>
+    <div class="kpi-body">
+      <div class="kpi-value"><%= summary.pendingCount %></div>
+      <div class="kpi-label">En attente</div>
+    </div>
+  </div>
+</div>
+
+<div class="admin-card">
+  <% if (payments.length === 0) { %>
+    <%- include('../partials/empty-state', {
+      icon: 'fa-solid fa-receipt',
+      title: 'Aucune transaction pour le moment',
+      subtitle: 'Les paiements apparaîtront ici dès le premier achat.'
+    }) %>
+  <% } else { %>
+    <div class="payments-table-wrap">
+      <table class="payments-table" id="paymentsTable">
+        <thead>
+          <tr>
+            <th>Réf.</th>
+            <th>Utilisateur</th>
+            <th>Formation</th>
+            <th>Montant</th>
+            <th>Méthode</th>
+            <th>Statut</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% payments.forEach(function(p) { %>
+            <tr data-status="<%= p.status %>">
+              <td class="td-mono">#<%= p.ref %></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="user-avatar-sm"><%= p.userName.charAt(0).toUpperCase() %></div>
+                  <%= p.userName %>
+                </div>
+              </td>
+              <td class="td-trunc"><%= p.courseName %></td>
+              <td class="td-amount"><strong><%= p.amount.toLocaleString('fr-FR') %></strong> XAF</td>
+              <td><%= p.method || 'Mobile Money' %></td>
+              <td>
+                <span class="status-chip status-<%= p.status %>">
+                  <% if (p.status === 'paid') { %><i class="fa-solid fa-check"></i> Payé<% } %>
+                  <% if (p.status === 'pending') { %><i class="fa-solid fa-clock"></i> En attente<% } %>
+                  <% if (p.status === 'failed') { %><i class="fa-solid fa-xmark"></i> Échoué<% } %>
+                </span>
+              </td>
+              <td class="td-date"><%= new Date(p.date).toLocaleDateString('fr-FR') %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
+
+<script>
+function filterPayments() {
+  var status = document.getElementById('statusFilter').value;
+  document.querySelectorAll('#paymentsTable tbody tr').forEach(function(row) {
+    row.style.display = (!status || row.dataset.status === status) ? '' : 'none';
+  });
+}
+</script>

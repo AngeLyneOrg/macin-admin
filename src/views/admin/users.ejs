@@ -1,0 +1,78 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Gestion des utilisateurs</h1>
+    <p class="page-sub"><%= users.length %> utilisateur<%= users.length > 1 ? 's' : '' %> enregistré<%= users.length > 1 ? 's' : '' %></p>
+  </div>
+  <div class="page-actions">
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="userSearch" placeholder="Rechercher un utilisateur…" oninput="filterUsers(this.value)">
+    </div>
+  </div>
+</div>
+
+<div class="admin-card">
+  <% if (users.length === 0) { %>
+    <%- include('../partials/empty-state', {
+      icon: 'fa-solid fa-users',
+      title: 'Aucun utilisateur pour le moment',
+      subtitle: 'Les utilisateurs apparaîtront ici dès leur inscription dans l\'application.'
+    }) %>
+  <% } else { %>
+    <div class="payments-table-wrap">
+      <table class="payments-table" id="usersTable">
+        <thead>
+          <tr>
+            <th>Utilisateur</th>
+            <th>Email</th>
+            <th>Cours inscrits</th>
+            <th>Inscrit le</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% users.forEach(function(u) { %>
+            <tr data-name="<%= u.name.toLowerCase() %>" data-email="<%= u.email.toLowerCase() %>">
+              <td>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div class="user-avatar"><%= u.name.charAt(0).toUpperCase() %></div>
+                  <span><%= u.name %></span>
+                </div>
+              </td>
+              <td><%= u.email %></td>
+              <td><%= u.enrolledCount %> formation<%= u.enrolledCount > 1 ? 's' : '' %></td>
+              <td class="td-date"><%= new Date(u.createdAt).toLocaleDateString('fr-FR') %></td>
+              <td>
+                <span class="status-chip status-<%= u.status %>">
+                  <%= u.status === 'active' ? 'Actif' : 'Suspendu' %>
+                </span>
+              </td>
+              <td>
+                <div style="display:flex;gap:8px;">
+                  <a href="/admin/users/<%= u.id %>" class="btn-sm btn-outline-sm">Détails</a>
+                  <form method="POST" action="/admin/users/<%= u.id %>/toggle" style="display:inline;">
+                    <input type="hidden" name="_method" value="POST">
+                    <button type="submit" class="btn-sm <%= u.status === 'active' ? 'btn-reject' : 'btn-approve' %>">
+                      <%= u.status === 'active' ? 'Suspendre' : 'Réactiver' %>
+                    </button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
+
+<script>
+function filterUsers(q) {
+  q = q.toLowerCase();
+  document.querySelectorAll('#usersTable tbody tr').forEach(function(row) {
+    var match = row.dataset.name.includes(q) || row.dataset.email.includes(q);
+    row.style.display = match ? '' : 'none';
+  });
+}
+</script>
