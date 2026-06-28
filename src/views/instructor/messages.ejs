@@ -1,0 +1,33 @@
+<div class="page-header">
+  <div><h1 class="page-title">Messagerie</h1><p class="page-sub">Vos échanges avec les étudiants et l'équipe MACIN</p></div>
+  <div class="page-actions">
+    <button class="btn btn-primary btn-sm"><i class="fa-solid fa-pen-to-square"></i> Nouveau message</button>
+  </div>
+</div>
+<div class="messages-layout">
+  <div class="messages-list dash-card">
+    <div class="messages-search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" placeholder="Rechercher…">
+    </div>
+    <ul class="msg-thread-list">
+      <% messages.forEach(function(m) { %>
+        <li class="msg-thread <%= m.unread ? 'msg-unread' : '' %>">
+          <div class="msg-avatar-circle"><%= m.avatar %></div>
+          <div class="msg-thread-body">
+            <div class="msg-thread-top"><span class="msg-from"><%= m.from %></span><span class="msg-time"><%= m.time %></span></div>
+            <div class="msg-subject"><%= m.subject %></div>
+            <div class="msg-preview"><%= m.preview %></div>
+          </div>
+          <% if (m.unread) { %><span class="msg-dot"></span><% } %>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+  <div class="messages-compose dash-card">
+    <div class="card-empty" style="height:100%;justify-content:center;">
+      <i class="fa-solid fa-envelope-open-text fa-3x" style="color:var(--border);"></i>
+      <p style="margin-top:12px;">Sélectionne un message ou compose-en un nouveau</p>
+    </div>
+  </div>
+</div>

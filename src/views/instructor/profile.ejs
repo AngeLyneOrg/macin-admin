@@ -1,0 +1,51 @@
+<div class="page-header">
+  <div><h1 class="page-title">Mon profil</h1><p class="page-sub">Gérez vos informations personnelles</p></div>
+</div>
+<div class="form-page-wrap">
+  <div class="dash-card form-card">
+    <form action="/instructor/profile" method="POST" class="form">
+      <div class="profile-avatar-section">
+        <div class="profile-avatar-big"><%= currentUser.email[0].toUpperCase() %></div>
+        <div>
+          <div class="profile-name"><%= profile.name || currentUser.email %></div>
+          <div class="profile-role">Formateur MACIN</div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nom complet</label>
+          <input type="text" name="name" value="<%= profile.name %>" placeholder="Votre nom">
+        </div>
+        <div class="form-group">
+          <label>Téléphone</label>
+          <input type="tel" name="phone" value="<%= profile.phone %>" placeholder="+237 6XX XXX XXX">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" value="<%= profile.email %>" disabled class="input-disabled">
+      </div>
+      <div class="form-group">
+        <label>Domaine d'expertise</label>
+        <input type="text" name="specialty" value="<%= profile.specialty %>" placeholder="ex: Développement Mobile">
+      </div>
+      <div class="form-group">
+        <label>Biographie</label>
+        <textarea name="bio" rows="4" class="form-textarea" placeholder="Parlez de votre expérience et de ce que vous enseignez…"><%= profile.bio %></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>LinkedIn</label>
+          <div class="input-icon"><i class="fa-brands fa-linkedin"></i><input type="url" name="linkedin" value="<%= profile.linkedin %>" placeholder="https://linkedin.com/in/…"></div>
+        </div>
+        <div class="form-group">
+          <label>Site web</label>
+          <div class="input-icon"><i class="fa-solid fa-globe"></i><input type="url" name="website" value="<%= profile.website %>" placeholder="https://…"></div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Sauvegarder</button>
+      </div>
+    </form>
+  </div>
+</div>

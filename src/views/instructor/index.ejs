@@ -1,0 +1,104 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Bonjour, <%= currentUser.name %> 👋</h1>
+    <p class="page-sub">Voici un aperçu de votre activité</p>
+  </div>
+  <div class="page-actions">
+    <a href="/instructor/courses/new" class="btn btn-primary btn-sm">
+      <i class="fa-solid fa-plus"></i> Nouvelle formation
+    </a>
+  </div>
+</div>
+
+<!-- KPIs formateur -->
+<div class="kpi-grid">
+  <div class="kpi-card kpi-blue">
+    <div class="kpi-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+    <div class="kpi-body">
+      <div class="kpi-value"><%= stats.totalStudents %></div>
+      <div class="kpi-label">Étudiants inscrits</div>
+      <div class="kpi-trend trend-up"><i class="fa-solid fa-arrow-trend-up"></i> Croissance positive</div>
+    </div>
+  </div>
+  <div class="kpi-card kpi-green">
+    <div class="kpi-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+    <div class="kpi-body">
+      <div class="kpi-value"><%= stats.totalRevenue.toLocaleString('fr-FR') %> XAF</div>
+      <div class="kpi-label">Revenus générés</div>
+      <div class="kpi-trend">Mes formations</div>
+    </div>
+  </div>
+  <div class="kpi-card kpi-purple">
+    <div class="kpi-icon"><i class="fa-solid fa-book-open"></i></div>
+    <div class="kpi-body">
+      <div class="kpi-value"><%= stats.totalCourses %></div>
+      <div class="kpi-label">Formations</div>
+      <div class="kpi-trend"><%= stats.publishedCourses %> publiées · <%= stats.draftCourses %> brouillons</div>
+    </div>
+  </div>
+  <div class="kpi-card kpi-orange">
+    <div class="kpi-icon"><i class="fa-solid fa-star"></i></div>
+    <div class="kpi-body">
+      <div class="kpi-value"><%= stats.avgRating %>/5</div>
+      <div class="kpi-label">Note moyenne</div>
+      <div class="kpi-trend"><%= stats.totalBadges %> badges créés</div>
+    </div>
+  </div>
+</div>
+
+<div class="dash-grid">
+  <!-- Mes formations récentes -->
+  <div class="dash-card">
+    <div class="dash-card-head">
+      <h2 class="dash-card-title"><i class="fa-solid fa-book-open"></i> Mes formations</h2>
+      <a href="/instructor/courses" class="dash-card-link">Tout voir</a>
+    </div>
+    <% if (recentCourses.length === 0) { %>
+      <div class="card-empty">
+        <i class="fa-solid fa-book-open fa-2x"></i>
+        <p>Aucune formation créée</p>
+        <a href="/instructor/courses/new" class="btn btn-primary btn-sm" style="margin-top:12px;">Créer ma première formation</a>
+      </div>
+    <% } else { %>
+      <ul class="course-mini-list">
+        <% recentCourses.forEach(function(c) { %>
+          <li class="course-mini-item">
+            <div class="course-mini-thumb">
+              <% if (c.thumbnailUrl) { %><img src="<%= c.thumbnailUrl %>" alt=""><% } else { %><i class="fa-solid fa-book-open"></i><% } %>
+            </div>
+            <div class="course-mini-info">
+              <div class="course-mini-title"><%= c.title %></div>
+              <div class="course-mini-meta">
+                <span class="status-pill status-<%= c.isPublished ? 'active' : 'pending' %>"><%= c.isPublished ? 'Publiée' : 'Brouillon' %></span>
+              </div>
+            </div>
+            <a href="/instructor/courses/<%= c.id %>" class="btn-icon"><i class="fa-solid fa-arrow-right"></i></a>
+          </li>
+        <% }) %>
+      </ul>
+    <% } %>
+  </div>
+
+  <!-- Messagerie -->
+  <div class="dash-card">
+    <div class="dash-card-head">
+      <h2 class="dash-card-title"><i class="fa-solid fa-envelope"></i> Messages récents</h2>
+      <a href="/instructor/messages" class="dash-card-link">Tout voir</a>
+    </div>
+    <ul class="msg-thread-list">
+      <% recentMessages.forEach(function(m) { %>
+        <li class="msg-thread <%= m.unread ? 'msg-unread' : '' %>">
+          <div class="msg-avatar-circle"><%= m.avatar %></div>
+          <div class="msg-thread-body">
+            <div class="msg-thread-top">
+              <span class="msg-from"><%= m.from %></span>
+              <span class="msg-time"><%= m.time %></span>
+            </div>
+            <div class="msg-subject"><%= m.subject %></div>
+          </div>
+          <% if (m.unread) { %><span class="msg-dot"></span><% } %>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+</div>

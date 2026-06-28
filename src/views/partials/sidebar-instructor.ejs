@@ -1,0 +1,58 @@
+<aside class="sidebar" id="sidebar">
+  <button class="sidebar-close" id="sidebarClose" aria-label="Fermer">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+
+  <div class="sidebar-brand">
+    <img src="/img/logo.png" alt="MACIN" class="brand-logo"
+         onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+    <span class="brand-mark" style="display:none;">M</span>
+    <span class="brand-name">MACIN</span>
+  </div>
+
+  <div class="sidebar-role-badge sidebar-role-instructor">
+    <i class="fa-solid fa-chalkboard-user"></i> Formateur
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-group-label">Mon espace</div>
+    <a href="/instructor" class="nav-link <%= currentPath === '/instructor' ? 'active' : '' %>">
+      <i class="fa-solid fa-gauge nav-icon"></i> Tableau de bord
+    </a>
+    <a href="/instructor/messages" class="nav-link <%= currentPath.startsWith('/instructor/messages') ? 'active' : '' %>">
+      <i class="fa-solid fa-envelope nav-icon"></i> Messagerie
+    </a>
+    <a href="/instructor/profile" class="nav-link <%= currentPath.startsWith('/instructor/profile') ? 'active' : '' %>">
+      <i class="fa-solid fa-user-circle nav-icon"></i> Mon profil
+    </a>
+
+    <div class="nav-group-label">Mes formations</div>
+    <a href="/instructor/courses" class="nav-link <%= currentPath === '/instructor/courses' ? 'active' : '' %>">
+      <i class="fa-solid fa-book-open nav-icon"></i> Toutes les formations
+    </a>
+    <a href="/instructor/courses/new" class="nav-link nav-link-new <%= currentPath === '/instructor/courses/new' ? 'active' : '' %>">
+      <i class="fa-solid fa-plus nav-icon"></i> Nouvelle formation
+    </a>
+
+    <div class="nav-group-label">À venir</div>
+    <a href="/instructor/visio" class="nav-link nav-link-soon <%= currentPath.startsWith('/instructor/visio') ? 'active' : '' %>">
+      <i class="fa-solid fa-video nav-icon"></i> Visioconférences
+      <span class="nav-soon">Bientôt</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar sidebar-avatar-instructor"><%= currentUser.email[0].toUpperCase() %></div>
+      <div class="sidebar-user-info">
+        <span class="sidebar-user-name"><%= currentUser.name || 'Formateur' %></span>
+        <span class="sidebar-user-email"><%= currentUser.email %></span>
+      </div>
+    </div>
+    <form action="/logout" method="POST" style="margin-top:12px;">
+      <button type="submit" class="sidebar-logout">
+        <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+      </button>
+    </form>
+  </div>
+</aside>

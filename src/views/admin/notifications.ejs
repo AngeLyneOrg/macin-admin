@@ -1,0 +1,23 @@
+<div class="page-header">
+  <div><h1 class="page-title">Notifications</h1><p class="page-sub">Activité de la plateforme</p></div>
+</div>
+<div class="dash-card">
+  <ul class="notif-list notif-list-full">
+    <% notifications.forEach(function(n) { %>
+      <li class="notif-item notif-item-full <%= n.read ? '' : 'notif-unread' %>">
+        <div class="notif-icon ai-<%= n.color %>"><i class="fa-solid <%= n.icon %>"></i></div>
+        <div class="notif-body" style="flex:1;">
+          <div class="notif-text"><%= n.text %></div>
+          <div class="notif-time"><%= n.time %></div>
+        </div>
+        <% if (!n.read) { %>
+          <form method="POST" action="/admin/notifications/<%= n.id %>/read">
+            <button class="btn-sm btn-outline-sm">Marquer lu</button>
+          </form>
+        <% } else { %>
+          <span class="td-muted" style="font-size:.8rem">Lu</span>
+        <% } %>
+      </li>
+    <% }) %>
+  </ul>
+</div>

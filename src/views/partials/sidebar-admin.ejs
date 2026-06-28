@@ -1,0 +1,61 @@
+<aside class="sidebar" id="sidebar">
+  <button class="sidebar-close" id="sidebarClose" aria-label="Fermer">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+
+  <div class="sidebar-brand">
+    <img src="/img/logo.png" alt="MACIN" class="brand-logo"
+         onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+    <span class="brand-mark" style="display:none;">M</span>
+    <span class="brand-name">MACIN</span>
+  </div>
+
+  <div class="sidebar-role-badge sidebar-role-admin">
+    <i class="fa-solid fa-shield-halved"></i> Administrateur
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-group-label">Vue d'ensemble</div>
+    <a href="/admin" class="nav-link <%= currentPath === '/admin' ? 'active' : '' %>">
+      <i class="fa-solid fa-gauge nav-icon"></i> Tableau de bord
+      <% if (typeof stats !== 'undefined' && stats.unreadNotifs > 0) { %>
+        <span class="nav-badge"><%= stats.unreadNotifs %></span>
+      <% } %>
+    </a>
+    <a href="/admin/notifications" class="nav-link <%= currentPath.startsWith('/admin/notifications') ? 'active' : '' %>">
+      <i class="fa-solid fa-bell nav-icon"></i> Notifications
+    </a>
+    <a href="/admin/messages" class="nav-link <%= currentPath.startsWith('/admin/messages') ? 'active' : '' %>">
+      <i class="fa-solid fa-envelope nav-icon"></i> Messagerie
+    </a>
+
+    <div class="nav-group-label">Plateforme</div>
+    <a href="/admin/users" class="nav-link <%= currentPath.startsWith('/admin/users') ? 'active' : '' %>">
+      <i class="fa-solid fa-users nav-icon"></i> Utilisateurs
+    </a>
+    <a href="/admin/instructors" class="nav-link <%= currentPath.startsWith('/admin/instructors') ? 'active' : '' %>">
+      <i class="fa-solid fa-chalkboard-user nav-icon"></i> Formateurs
+    </a>
+    <a href="/admin/courses/pending" class="nav-link <%= currentPath.startsWith('/admin/courses') ? 'active' : '' %>">
+      <i class="fa-solid fa-circle-check nav-icon"></i> Validation contenus
+    </a>
+    <a href="/admin/payments" class="nav-link <%= currentPath.startsWith('/admin/payments') ? 'active' : '' %>">
+      <i class="fa-solid fa-credit-card nav-icon"></i> Paiements
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar sidebar-avatar-admin"><%= currentUser.email[0].toUpperCase() %></div>
+      <div class="sidebar-user-info">
+        <span class="sidebar-user-name">Administrateur</span>
+        <span class="sidebar-user-email"><%= currentUser.email %></span>
+      </div>
+    </div>
+    <form action="/logout" method="POST" style="margin-top:12px;">
+      <button type="submit" class="sidebar-logout">
+        <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+      </button>
+    </form>
+  </div>
+</aside>

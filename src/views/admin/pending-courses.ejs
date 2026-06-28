@@ -1,0 +1,31 @@
+<div class="page-header">
+  <div><h1 class="page-title">Formations à valider</h1><p class="page-sub"><%= courses.length %> en attente d'approbation</p></div>
+</div>
+<div class="dash-card">
+  <% if (courses.length === 0) { %>
+    <%- include('../partials/empty-state', { icon:'fa-solid fa-circle-check', title:'Aucune formation en attente', subtitle:'Tout le contenu soumis a été traité.' }) %>
+  <% } else { %>
+    <ul class="pending-list">
+      <% courses.forEach(function(c) { %>
+        <li class="pending-item">
+          <div class="pending-info">
+            <div class="pending-title"><%= c.title %></div>
+            <div class="pending-meta">
+              Formateur : <strong><%= c.instructor %></strong> · 
+              <%= c.modules %> modules · <%= c.lessons %> leçons · 
+              Soumis le <%= new Date(c.submittedAt).toLocaleDateString('fr-FR') %>
+            </div>
+          </div>
+          <div class="pending-actions">
+            <form method="POST" action="/admin/courses/<%= c.id %>/approve" style="display:inline">
+              <button class="btn-sm btn-approve"><i class="fa-solid fa-check"></i> Valider</button>
+            </form>
+            <form method="POST" action="/admin/courses/<%= c.id %>/reject" style="display:inline">
+              <button class="btn-sm btn-reject"><i class="fa-solid fa-xmark"></i> Rejeter</button>
+            </form>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
+</div>

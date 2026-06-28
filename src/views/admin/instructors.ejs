@@ -1,0 +1,29 @@
+<div class="page-header">
+  <div><h1 class="page-title">Formateurs</h1><p class="page-sub"><%= instructors.length %> formateur(s) enregistré(s)</p></div>
+</div>
+<div class="dash-card">
+  <% if (instructors.length === 0) { %>
+    <%- include('../partials/empty-state', { icon:'fa-solid fa-chalkboard-user', title:'Aucun formateur pour le moment', subtitle:'Les formateurs approuvés apparaîtront ici.' }) %>
+  <% } else { %>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr><th>Nom</th><th>Email</th><th>Formations</th><th>Statut</th><th>Actions</th></tr></thead>
+        <tbody>
+          <% instructors.forEach(function(i) { %>
+            <tr>
+              <td><span class="avatar-xs"><%= (i.name||'F').charAt(0) %></span> <%= i.name || '—' %></td>
+              <td><%= i.email || '—' %></td>
+              <td><%= i.courseCount || 0 %> formation(s)</td>
+              <td><span class="status-pill status-active">Actif</span></td>
+              <td>
+                <form method="POST" action="/admin/instructors/<%= i.id %>/approve" style="display:inline">
+                  <button class="btn-sm btn-approve"><i class="fa-solid fa-check"></i></button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>

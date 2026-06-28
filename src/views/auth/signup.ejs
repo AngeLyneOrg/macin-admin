@@ -1,0 +1,65 @@
+<div class="auth-wrapper">
+  <div class="auth-card auth-card-wide">
+    <div class="auth-brand">
+      <img src="/img/logo.png" alt="MACIN" class="auth-logo"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <span class="brand-mark auth-mark" style="display:none;">M</span>
+      <span class="auth-brand-name">MACIN</span>
+    </div>
+
+    <h1 class="auth-title">Devenir formateur</h1>
+    <p class="auth-subtitle">Partage ton expertise et impacte des milliers d'apprenants</p>
+
+    <form action="/devenir-formateur" method="POST" class="form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">Nom complet <span class="req">*</span></label>
+          <div class="input-icon">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" name="name" id="name" required placeholder="Jean Fouda">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email <span class="req">*</span></label>
+          <div class="input-icon">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" name="email" id="email" required placeholder="jean@email.cm">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="phone">Téléphone</label>
+          <div class="input-icon">
+            <i class="fa-solid fa-phone"></i>
+            <input type="tel" name="phone" id="phone" placeholder="+237 6XX XXX XXX">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="specialty">Domaine d'expertise <span class="req">*</span></label>
+          <div class="input-icon">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <input type="text" name="specialty" id="specialty" required placeholder="ex: Développement Flutter, Design…">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="motivation">Pourquoi veux-tu devenir formateur ? <span class="req">*</span></label>
+        <textarea name="motivation" id="motivation" rows="4" required
+          placeholder="Décris ton expérience, tes formations envisagées et ta motivation…" class="form-textarea"></textarea>
+      </div>
+
+      <div class="signup-info-box">
+        <i class="fa-solid fa-circle-info"></i>
+        <span>Ta demande sera examinée par notre équipe sous <strong>48h</strong>. Tu recevras une confirmation par email.</span>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">
+        <i class="fa-solid fa-paper-plane"></i> Envoyer ma candidature
+      </button>
+    </form>
+
+    <p class="auth-back"><a href="/login"><i class="fa-solid fa-arrow-left"></i> Retour à la connexion</a></p>
+  </div>
+  <p class="auth-footer">MACIN — Plateforme d'E-Formation Intelligente</p>
+</div>
