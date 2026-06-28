@@ -1,67 +1,111 @@
+<%
+  const formAction = course
+    ? `/instructor/courses/${course.id}`
+    : '/instructor/courses';
+%>
+
 <div class="section-header">
-  <h2><%= course ? 'Modifier la formation' : 'Nouvelle formation' %></h2>
-  <a href="/courses" class="btn btn-ghost btn-sm">← Retour</a>
+  <div>
+    <h2><%= course ? 'Modifier la formation' : 'Nouvelle formation' %></h2>
+    <p class="text-muted"><%= course ? course.id : 'Remplis les informations ci-dessous' %></p>
+  </div>
+  <a href="/instructor/courses" class="btn btn-ghost btn-sm">
+    <i class="fa-solid fa-arrow-left"></i> Retour
+  </a>
 </div>
 
-<form action="<%= course ? `/courses/${course.id}` : '/courses' %>" method="POST" enctype="multipart/form-data" class="form card">
+<form action="<%= formAction %>" method="POST" enctype="multipart/form-data" class="form card" style="max-width:760px;">
+
   <div class="form-group">
-    <label for="title">Titre de la formation</label>
-    <input type="text" name="title" id="title" required value="<%= course ? course.title : '' %>">
+    <label for="title">Titre de la formation <span class="req">*</span></label>
+    <input type="text" name="title" id="title" required
+      value="<%= course ? course.title : '' %>"
+      placeholder="ex: Flutter Avancé — Construire des apps professionnelles">
   </div>
 
   <div class="form-group">
     <label for="description">Description</label>
-    <textarea name="description" id="description" rows="4"><%= course ? course.description : '' %></textarea>
+    <textarea name="description" id="description" rows="4" class="form-textarea"
+      placeholder="Décris ce que l'étudiant va apprendre, les prérequis et les objectifs..."><%= course ? course.description : '' %></textarea>
   </div>
 
   <div class="form-row">
     <div class="form-group">
       <label for="level">Niveau</label>
       <select name="level" id="level">
-        <% ['beginner', 'intermediate', 'advanced'].forEach(function(lvl) { %>
+        <% ['beginner','intermediate','advanced'].forEach(function(lvl) { %>
           <option value="<%= lvl %>" <%= course && course.level === lvl ? 'selected' : '' %>>
-            <%= lvl === 'beginner' ? 'Débutant' : lvl === 'intermediate' ? 'Intermédiaire' : 'Avancé' %>
+            <%= lvl === 'beginner' ? '🟢 Débutant' : lvl === 'intermediate' ? '🟡 Intermédiaire' : '🔴 Avancé' %>
           </option>
         <% }) %>
       </select>
     </div>
     <div class="form-group">
-      <label for="price">Prix (0 = gratuit)</label>
-      <input type="number" name="price" id="price" min="0" step="100" value="<%= course ? course.price : 0 %>">
+      <label for="price">Prix (XAF · 0 = gratuit)</label>
+      <input type="number" name="price" id="price" min="0" step="500"
+        value="<%= course ? course.price : 0 %>">
     </div>
   </div>
 
   <div class="form-group">
-    <label for="instructorId">Formateur</label>
+    <label for="instructorId">Formateur assigné</label>
     <select name="instructorId" id="instructorId">
       <option value="">— Aucun formateur assigné —</option>
       <% instructors.forEach(function(inst) { %>
-        <option value="<%= inst.id %>" <%= course && course.instructorId === inst.id ? 'selected' : '' %>>
-          <%= inst.displayName %>
+        <option value="<%= inst.id %>"
+          <%= course && course.instructorId === inst.id ? 'selected' : '' %>>
+          <%= inst.displayName || inst.email %>
         </option>
       <% }) %>
     </select>
-    <p class="form-hint">Pas encore de formateur ? <a href="/instructors/new">Crée-en un d'abord</a>.</p>
+    <% if (instructors.length === 0) { %>
+      <p class="form-hint">
+        <i class="fa-solid fa-circle-info"></i>
+        Aucun formateur enregistré. Tu peux en ajouter via l'admin.
+      </p>
+    <% } %>
   </div>
 
   <div class="form-group">
     <label for="tags">Tags (séparés par des virgules)</label>
-    <input type="text" name="tags" id="tags" placeholder="flutter, dart, firebase"
+    <input type="text" name="tags" id="tags"
+      placeholder="flutter, dart, firebase, mobile"
       value="<%= course && course.tags ? course.tags.join(', ') : '' %>">
+    <p class="form-hint">Les tags aident les apprenants à trouver ta formation.</p>
   </div>
 
   <div class="form-group">
     <label for="thumbnail">Miniature de la formation</label>
     <input type="file" name="thumbnail" id="thumbnail" accept="image/*">
     <% if (course && course.thumbnailUrl) { %>
-      <img src="<%= course.thumbnailUrl %>" alt="Miniature actuelle" class="thumb-preview">
+      <div style="margin-top:10px;">
+        <p class="form-hint">Miniature actuelle :</p>
+        <img src="<%= course.thumbnailUrl %>" alt="Miniature" class="thumb-preview">
+      </div>
     <% } %>
+    <p class="form-hint">Format recommandé : JPG ou PNG, ratio 16:9 (ex: 1280×720).</p>
   </div>
 
   <div class="form-checkbox">
-    <input type="checkbox" name="isPublished" id="isPublished" <%= course && course.isPublished ? 'checked' : '' %>>
-    <label for="isPublished">Publier cette formation (visible dans l'application mobile)</label>
+    <input type="checkbox" name="isPublished" id="isPublished"
+      <%= course && course.isPublished ? 'checked' : '' %>>
+    <label for="isPublished">
+      <strong>Publier cette formation</strong> — visible dans l'application mobile
+    </label>
   </div>
 
-  <button type="submit" class="btn btn-primary"><%= course ? 'Enregistrer les modifications' : 'Créer la formation' %></button>
+  <% if (course && !course.isPublished) { %>
+    <div class="signup-info-box" style="margin-top:0;">
+      <i class="fa-solid fa-circle-info"></i>
+      <span>La formation est en <strong>brouillon</strong>. Coche la case ci-dessus et sauvegarde pour la publier. Elle sera visible après validation par un administrateur.</span>
+    </div>
+  <% } %>
+
+  <div class="form-actions">
+    <a href="/instructor/courses" class="btn btn-ghost">Annuler</a>
+    <button type="submit" class="btn btn-primary">
+      <i class="fa-solid fa-<%= course ? 'floppy-disk' : 'plus' %>"></i>
+      <%= course ? 'Enregistrer les modifications' : 'Créer la formation' %>
+    </button>
+  </div>
 </form>

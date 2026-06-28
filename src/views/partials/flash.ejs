@@ -1,10 +1,14 @@
 <% if (successMessages && successMessages.length) { %>
-  <% successMessages.forEach(function(msg) { %>
-    <div class="alert alert-success"><%= msg %></div>
-  <% }) %>
+  <ul class="flash-list">
+    <% successMessages.forEach(function(msg) { %>
+      <li class="flash-msg flash-success"><i class="fa-solid fa-circle-check"></i> <%= msg %></li>
+    <% }) %>
+  </ul>
 <% } %>
 <% if (errorMessages && errorMessages.length) { %>
-  <% errorMessages.forEach(function(msg) { %>
-    <div class="alert alert-error"><%= msg %></div>
-  <% }) %>
+  <ul class="flash-list">
+    <% errorMessages.forEach(function(msg) { %>
+      <li class="flash-msg flash-error"><i class="fa-solid fa-triangle-exclamation"></i> <%= msg %></li>
+    <% }) %>
+  </ul>
 <% } %>

@@ -1,13 +1,19 @@
 <div class="section-header">
-  <h2>Toutes les formations</h2>
-  <a href="/courses/new" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Nouvelle formation</a>
+  <div>
+    <h2><i class="fa-solid fa-book-open"></i> Mes formations</h2>
+    <p class="text-muted"><%= courses.length %> formation<%= courses.length > 1 ? 's' : '' %></p>
+  </div>
+  <a href="/instructor/courses/new" class="btn btn-primary btn-sm">
+    <i class="fa-solid fa-plus"></i> Nouvelle formation
+  </a>
 </div>
 
 <% if (courses.length === 0) { %>
   <%- include('../partials/empty-state', {
-    icon: 'fa-solid fa-book-open',
-    title: 'Aucune formation pour le moment',
-    ctaHref: '/courses/new',
+    icon:     'fa-solid fa-book-open',
+    title:    'Aucune formation pour le moment',
+    subtitle: 'Crée ta première formation et commence à partager ton expertise.',
+    ctaHref:  '/instructor/courses/new',
     ctaLabel: 'Créer une formation'
   }) %>
 <% } else { %>

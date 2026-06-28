@@ -1,18 +1,36 @@
 <header class="topbar">
   <div class="topbar-left">
-    <button class="hamburger" aria-label="Ouvrir le menu">
-      <i class="fa-solid fa-bars"></i>
+    <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu">
+      <span class="ham-bar"></span>
+      <span class="ham-bar"></span>
+      <span class="ham-bar"></span>
     </button>
     <h1 class="topbar-title"><%= title %></h1>
   </div>
-  <div class="topbar-user">
-    <span class="user-avatar"><%= currentUser.email[0].toUpperCase() %></span>
-    <span class="user-email"><%= currentUser.email %></span>
-    <form action="/logout" method="POST">
-      <button type="submit" class="btn btn-ghost btn-sm">
-        <i class="fa-solid fa-right-from-bracket"></i>
-        <span>Déconnexion</span>
-      </button>
-    </form>
+  <div class="topbar-right">
+    <% if (currentUser.role === 'admin') { %>
+      <a href="/admin/notifications" class="topbar-icon-btn" title="Notifications">
+        <i class="fa-solid fa-bell"></i>
+      </a>
+      <a href="/admin/messages" class="topbar-icon-btn" title="Messages">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    <% } else { %>
+      <a href="/instructor/messages" class="topbar-icon-btn" title="Messages">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    <% } %>
+    <div class="topbar-user">
+      <div class="topbar-avatar topbar-avatar-<%= currentUser.role %>"><%= currentUser.email[0].toUpperCase() %></div>
+      <div class="topbar-user-info">
+        <span class="topbar-user-name"><%= currentUser.name || currentUser.email %></span>
+        <span class="topbar-user-role"><%= currentUser.role === 'admin' ? 'Administrateur' : 'Formateur' %></span>
+      </div>
+      <form action="/logout" method="POST" style="margin-left:8px;">
+        <button type="submit" class="topbar-logout" title="Déconnexion">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+      </form>
+    </div>
   </div>
 </header>

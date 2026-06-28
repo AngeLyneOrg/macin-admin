@@ -1,232 +1,151 @@
-<!-- ══ ADMIN DASHBOARD ══ -->
-<div class="admin-dash">
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Tableau de bord</h1>
+    <p class="page-sub">Vue globale de la plateforme MACIN</p>
+  </div>
+  <div class="page-actions">
+    <span class="badge-live"><span class="live-dot"></span> En ligne</span>
+  </div>
+</div>
 
-  <!-- Page header -->
-  <div class="page-header">
-    <div>
-      <h1 class="page-title">Administration</h1>
-      <p class="page-sub">Vue globale de la plateforme MACIN</p>
-    </div>
-    <div class="page-actions">
-      <span class="badge-live"><span class="live-dot"></span> En ligne</span>
+<!-- KPIs -->
+<div class="kpi-grid">
+  <div class="kpi-card kpi-blue">
+    <div class="kpi-icon"><i class="fa-solid fa-users"></i></div>
+    <div class="kpi-body">
+      <div class="kpi-value"><%= stats.totalUsers %></div>
+      <div class="kpi-label">Utilisateurs</div>
+      <div class="kpi-trend trend-up"><i class="fa-solid fa-arrow-trend-up"></i> +<%= stats.newUsersThisMonth %> ce mois</div>
     </div>
   </div>
-
-  <!-- KPI Grid -->
-  <div class="admin-kpi-grid">
-    <div class="kpi-card kpi-blue">
-      <div class="kpi-icon"><i class="fa-solid fa-users"></i></div>
-      <div class="kpi-body">
-        <div class="kpi-value"><%= stats.totalUsers %></div>
-        <div class="kpi-label">Utilisateurs</div>
-        <div class="kpi-trend trend-up"><i class="fa-solid fa-arrow-trend-up"></i> +<%= stats.newUsersThisMonth %> ce mois</div>
-      </div>
+  <div class="kpi-card kpi-green">
+    <div class="kpi-icon"><i class="fa-solid fa-credit-card"></i></div>
+    <div class="kpi-body">
+      <div class="kpi-value"><%= stats.totalRevenue.toLocaleString('fr-FR') %> XAF</div>
+      <div class="kpi-label">Revenus totaux</div>
+      <div class="kpi-trend trend-up"><i class="fa-solid fa-arrow-trend-up"></i> +<%= stats.revenueGrowth %>% ce mois</div>
     </div>
-    <div class="kpi-card kpi-green">
-      <div class="kpi-icon"><i class="fa-solid fa-credit-card"></i></div>
-      <div class="kpi-body">
-        <div class="kpi-value"><%= stats.totalRevenue.toLocaleString('fr-FR') %> XAF</div>
-        <div class="kpi-label">Revenus totaux</div>
-        <div class="kpi-trend trend-up"><i class="fa-solid fa-arrow-trend-up"></i> <%= stats.revenueGrowth %>% ce mois</div>
-      </div>
+  </div>
+  <div class="kpi-card kpi-purple">
+    <div class="kpi-icon"><i class="fa-solid fa-book-open"></i></div>
+    <div class="kpi-body">
+      <div class="kpi-value"><%= stats.totalCourses %></div>
+      <div class="kpi-label">Formations totales</div>
+      <div class="kpi-trend"><i class="fa-solid fa-circle-check"></i> <%= stats.publishedCourses %> publiées</div>
     </div>
-    <div class="kpi-card kpi-purple">
-      <div class="kpi-icon"><i class="fa-solid fa-book-open"></i></div>
-      <div class="kpi-body">
-        <div class="kpi-value"><%= stats.totalCourses %></div>
-        <div class="kpi-label">Formations</div>
-        <div class="kpi-trend"><i class="fa-solid fa-circle-check"></i> <%= stats.publishedCourses %> publiées</div>
-      </div>
-    </div>
-    <div class="kpi-card kpi-orange">
-      <div class="kpi-icon"><i class="fa-solid fa-clock"></i></div>
-      <div class="kpi-body">
-        <div class="kpi-value"><%= stats.pendingContent %></div>
-        <div class="kpi-label">En attente de validation</div>
+  </div>
+  <div class="kpi-card kpi-orange">
+    <div class="kpi-icon"><i class="fa-solid fa-clock"></i></div>
+    <div class="kpi-body">
+      <div class="kpi-value"><%= stats.pendingCourses %></div>
+      <div class="kpi-label">En attente de validation</div>
+      <% if (stats.pendingCourses > 0) { %>
         <div class="kpi-trend trend-warn"><i class="fa-solid fa-triangle-exclamation"></i> Action requise</div>
-      </div>
+      <% } else { %>
+        <div class="kpi-trend">Tout à jour ✓</div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<!-- Grille principale -->
+<div class="dash-grid">
+
+  <!-- Formations à valider -->
+  <div class="dash-card">
+    <div class="dash-card-head">
+      <h2 class="dash-card-title"><i class="fa-solid fa-inbox"></i> Formations à valider</h2>
+      <% if (pendingCourses.length > 0) { %><span class="badge-count"><%= pendingCourses.length %></span><% } %>
+    </div>
+    <% if (pendingCourses.length === 0) { %>
+      <div class="card-empty"><i class="fa-solid fa-circle-check fa-2x"></i><p>Aucune formation en attente</p></div>
+    <% } else { %>
+      <ul class="pending-list">
+        <% pendingCourses.forEach(function(c) { %>
+          <li class="pending-item">
+            <div class="pending-info">
+              <div class="pending-title"><%= c.title %></div>
+              <div class="pending-meta">par <%= c.instructor %> · <%= c.modules %> modules · <%= c.lessons %> leçons</div>
+            </div>
+            <div class="pending-actions">
+              <form method="POST" action="/admin/courses/<%= c.id %>/approve" style="display:inline">
+                <button class="btn-sm btn-approve"><i class="fa-solid fa-check"></i> Valider</button>
+              </form>
+              <form method="POST" action="/admin/courses/<%= c.id %>/reject" style="display:inline">
+                <button class="btn-sm btn-reject"><i class="fa-solid fa-xmark"></i> Rejeter</button>
+              </form>
+            </div>
+          </li>
+        <% }) %>
+      </ul>
+    <% } %>
+  </div>
+
+  <!-- Notifications récentes -->
+  <div class="dash-card">
+    <div class="dash-card-head">
+      <h2 class="dash-card-title"><i class="fa-solid fa-bell"></i> Notifications</h2>
+      <a href="/admin/notifications" class="dash-card-link">Tout voir</a>
+    </div>
+    <ul class="notif-list">
+      <% recentNotifs.forEach(function(n) { %>
+        <li class="notif-item <%= n.read ? '' : 'notif-unread' %>">
+          <div class="notif-icon ai-<%= n.color %>"><i class="fa-solid <%= n.icon %>"></i></div>
+          <div class="notif-body">
+            <div class="notif-text"><%= n.text %></div>
+            <div class="notif-time"><%= n.time %></div>
+          </div>
+          <% if (!n.read) { %><span class="notif-dot"></span><% } %>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+</div>
+
+<!-- Paiements + Utilisateurs -->
+<div class="dash-grid dash-grid-3">
+
+  <!-- Paiements récents -->
+  <div class="dash-card dash-col-2">
+    <div class="dash-card-head">
+      <h2 class="dash-card-title"><i class="fa-solid fa-receipt"></i> Paiements récents</h2>
+      <a href="/admin/payments" class="dash-card-link">Voir tout</a>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr><th>Utilisateur</th><th>Formation</th><th>Montant</th><th>Statut</th><th>Date</th></tr></thead>
+        <tbody>
+          <% recentPayments.forEach(function(p) { %>
+            <tr>
+              <td><span class="avatar-xs"><%= p.userName.charAt(0) %></span> <%= p.userName %></td>
+              <td class="td-trunc"><%= p.courseName %></td>
+              <td class="td-amount"><%= p.amount.toLocaleString('fr-FR') %> XAF</td>
+              <td><span class="status-pill status-<%= p.status %>"><%= p.status === 'paid' ? '✓ Payé' : p.status === 'pending' ? '⏳ Attente' : '✗ Échoué' %></span></td>
+              <td class="td-muted"><%= new Date(p.date).toLocaleDateString('fr-FR') %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
     </div>
   </div>
 
-  <!-- Main grid: Pending + Recent Payments -->
-  <div class="admin-grid">
-
-    <!-- Pending content -->
-    <div class="admin-card">
-      <div class="card-head">
-        <h2 class="card-title"><i class="fa-solid fa-inbox"></i> Contenus à valider</h2>
-        <% if (pendingContent.length > 0) { %>
-          <span class="badge-count"><%= pendingContent.length %></span>
-        <% } %>
-      </div>
-
-      <% if (pendingContent.length === 0) { %>
-        <div class="card-empty">
-          <i class="fa-solid fa-circle-check fa-2x"></i>
-          <p>Aucun contenu en attente — tout est à jour !</p>
-        </div>
-      <% } else { %>
-        <ul class="pending-list">
-          <% pendingContent.forEach(function(item) { %>
-            <li class="pending-item">
-              <div class="pending-meta">
-                <span class="pending-type pending-type-<%= item.type %>">
-                  <%= item.type === 'course' ? 'Formation' : item.type === 'lesson' ? 'Leçon' : 'Exercice' %>
-                </span>
-                <span class="pending-name"><%= item.title %></span>
-                <span class="pending-author">par <%= item.instructorName %></span>
-              </div>
-              <div class="pending-actions">
-                <form method="POST" action="/admin/content/<%= item.id %>/approve" style="display:inline;">
-                  <button type="submit" class="btn-sm btn-approve">
-                    <i class="fa-solid fa-check"></i> Valider
-                  </button>
-                </form>
-                <form method="POST" action="/admin/content/<%= item.id %>/reject" style="display:inline;">
-                  <button type="submit" class="btn-sm btn-reject">
-                    <i class="fa-solid fa-xmark"></i> Rejeter
-                  </button>
-                </form>
-              </div>
-            </li>
-          <% }) %>
-        </ul>
-      <% } %>
+  <!-- Utilisateurs récents -->
+  <div class="dash-card">
+    <div class="dash-card-head">
+      <h2 class="dash-card-title"><i class="fa-solid fa-users"></i> Utilisateurs</h2>
+      <a href="/admin/users" class="dash-card-link">Gérer</a>
     </div>
-
-    <!-- Recent payments -->
-    <div class="admin-card">
-      <div class="card-head">
-        <h2 class="card-title"><i class="fa-solid fa-receipt"></i> Paiements récents</h2>
-        <a href="/admin/payments" class="card-link">Voir tout</a>
-      </div>
-
-      <% if (recentPayments.length === 0) { %>
-        <div class="card-empty">
-          <i class="fa-solid fa-credit-card fa-2x"></i>
-          <p>Aucun paiement enregistré pour l'instant.</p>
-        </div>
-      <% } else { %>
-        <div class="payments-table-wrap">
-          <table class="payments-table">
-            <thead>
-              <tr>
-                <th>Utilisateur</th>
-                <th>Formation</th>
-                <th>Montant</th>
-                <th>Statut</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% recentPayments.forEach(function(p) { %>
-                <tr>
-                  <td><span class="user-avatar-sm"><%= p.userName.charAt(0).toUpperCase() %></span> <%= p.userName %></td>
-                  <td class="td-trunc"><%= p.courseName %></td>
-                  <td class="td-amount"><%= p.amount.toLocaleString('fr-FR') %> XAF</td>
-                  <td>
-                    <span class="status-chip status-<%= p.status %>">
-                      <% if (p.status === 'paid') { %>✓ Payé<% } %>
-                      <% if (p.status === 'pending') { %>⏳ En attente<% } %>
-                      <% if (p.status === 'failed') { %>✗ Échoué<% } %>
-                    </span>
-                  </td>
-                  <td class="td-date"><%= new Date(p.date).toLocaleDateString('fr-FR') %></td>
-                </tr>
-              <% }) %>
-            </tbody>
-          </table>
-        </div>
-      <% } %>
-    </div>
-
-  </div>
-
-  <!-- Users + Activity -->
-  <div class="admin-grid admin-grid-3">
-
-    <!-- Recent users -->
-    <div class="admin-card col-span-2">
-      <div class="card-head">
-        <h2 class="card-title"><i class="fa-solid fa-users"></i> Utilisateurs récents</h2>
-        <a href="/admin/users" class="card-link">Gérer les utilisateurs</a>
-      </div>
-      <% if (recentUsers.length === 0) { %>
-        <div class="card-empty">
-          <i class="fa-solid fa-user-plus fa-2x"></i>
-          <p>Aucun utilisateur inscrit pour le moment.</p>
-        </div>
-      <% } else { %>
-        <ul class="users-list">
-          <% recentUsers.forEach(function(u) { %>
-            <li class="user-item">
-              <div class="user-avatar"><%= u.name.charAt(0).toUpperCase() %></div>
-              <div class="user-info">
-                <span class="user-name"><%= u.name %></span>
-                <span class="user-email"><%= u.email %></span>
-              </div>
-              <div class="user-meta">
-                <span class="user-courses"><%= u.enrolledCount %> cours</span>
-                <span class="status-chip status-<%= u.status %>"><%= u.status === 'active' ? 'Actif' : 'Inactif' %></span>
-              </div>
-              <div class="user-actions">
-                <a href="/admin/users/<%= u.id %>" class="btn-icon" title="Voir profil"><i class="fa-solid fa-eye"></i></a>
-                <form method="POST" action="/admin/users/<%= u.id %>/toggle" style="display:inline;">
-                  <button type="submit" class="btn-icon btn-icon-warn" title="Suspendre / Réactiver">
-                    <i class="fa-solid fa-<%= u.status === 'active' ? 'ban' : 'circle-check' %>"></i>
-                  </button>
-                </form>
-              </div>
-            </li>
-          <% }) %>
-        </ul>
-      <% } %>
-    </div>
-
-    <!-- Quick stats / activity -->
-    <div class="admin-card">
-      <div class="card-head">
-        <h2 class="card-title"><i class="fa-solid fa-chart-bar"></i> Activité</h2>
-      </div>
-      <div class="activity-list">
-        <div class="activity-item">
-          <div class="activity-icon ai-blue"><i class="fa-solid fa-user-plus"></i></div>
-          <div>
-            <div class="activity-label">Nouveaux inscrits</div>
-            <div class="activity-value"><%= stats.newUsersThisMonth %> ce mois</div>
+    <ul class="users-mini-list">
+      <% recentUsers.forEach(function(u) { %>
+        <li class="user-mini-item">
+          <div class="user-avatar-circle"><%= u.name.charAt(0) %></div>
+          <div class="user-mini-info">
+            <span class="user-mini-name"><%= u.name %></span>
+            <span class="user-mini-sub"><%= u.enrolledCount %> cours</span>
           </div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-icon ai-green"><i class="fa-solid fa-graduation-cap"></i></div>
-          <div>
-            <div class="activity-label">Cours complétés</div>
-            <div class="activity-value"><%= stats.completedCourses %> ce mois</div>
-          </div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-icon ai-purple"><i class="fa-solid fa-medal"></i></div>
-          <div>
-            <div class="activity-label">Badges délivrés</div>
-            <div class="activity-value"><%= stats.badgesDelivered %> total</div>
-          </div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-icon ai-orange"><i class="fa-solid fa-chalkboard-user"></i></div>
-          <div>
-            <div class="activity-label">Formateurs actifs</div>
-            <div class="activity-value"><%= stats.activeInstructors %></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="quick-links">
-        <h3 class="ql-title">Accès rapides</h3>
-        <a href="/admin/users" class="ql-link"><i class="fa-solid fa-users"></i> Utilisateurs</a>
-        <a href="/admin/payments" class="ql-link"><i class="fa-solid fa-credit-card"></i> Paiements</a>
-        <a href="/dashboard/courses" class="ql-link"><i class="fa-solid fa-book-open"></i> Formations</a>
-        <a href="/dashboard/instructors" class="ql-link"><i class="fa-solid fa-chalkboard-user"></i> Formateurs</a>
-      </div>
-    </div>
-
+          <span class="status-pill status-<%= u.status %>"><%= u.status === 'active' ? 'Actif' : 'Inactif' %></span>
+        </li>
+      <% }) %>
+    </ul>
   </div>
 </div>

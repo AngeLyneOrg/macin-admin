@@ -1,24 +1,48 @@
 <div class="section-header">
-  <h2>Badges</h2>
-  <a href="/badges/new" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Nouveau badge</a>
+  <div>
+    <h2><i class="fa-solid fa-medal" style="color:var(--gold,#F5A623);"></i> Badges</h2>
+    <% if (courseId) { %>
+      <p class="text-muted">Formation : <%= courseId %></p>
+    <% } %>
+  </div>
+  <a href="<%= courseId ? `/instructor/courses/${courseId}/badges/new` : '/instructor' %>"
+     class="btn btn-primary btn-sm">
+    <i class="fa-solid fa-plus"></i> Nouveau badge
+  </a>
 </div>
 
-<% if (badges.length === 0) { %>
+<% if (!badges || badges.length === 0) { %>
   <%- include('../partials/empty-state', {
-    icon: 'fa-solid fa-medal',
-    title: 'Aucun badge créé',
-    ctaHref: '/badges/new',
+    icon:     'fa-solid fa-medal',
+    title:    'Aucun badge pour le moment',
+    subtitle: 'Les badges récompensent et motivent tes apprenants.',
+    ctaHref:  courseId ? `/instructor/courses/${courseId}/badges/new` : '/instructor',
     ctaLabel: 'Créer un badge'
   }) %>
 <% } else { %>
-  <div class="badge-grid">
+  <div class="badges-grid">
     <% badges.forEach(function(b) { %>
-      <div class="badge-card">
-        <% if (b.iconUrl) { %><img src="<%= b.iconUrl %>" alt="" class="badge-icon"><% } %>
-        <h4><%= b.name %></h4>
-        <p class="text-muted"><%= b.description %></p>
-        <span class="badge badge-muted"><%= b.rarity %> · +<%= b.xpBonus %> XP</span>
-        <%- include('../partials/delete-button', { action: `/badges/${b.id}/delete`, confirmText: 'Supprimer ce badge ?' }) %>
+      <div class="badge-card dash-card">
+        <div class="badge-card-icon">
+          <% if (b.iconUrl) { %>
+            <img src="<%= b.iconUrl %>" alt="<%= b.name %>">
+          <% } else { %>
+            <i class="fa-solid fa-medal"></i>
+          <% } %>
+        </div>
+        <div class="badge-card-body">
+          <h4 class="badge-card-name"><%= b.name %></h4>
+          <p class="badge-card-desc text-muted"><%= b.description || 'Aucune description.' %></p>
+          <div style="margin-top:10px;">
+            <form method="POST"
+              action="<%= courseId ? `/instructor/courses/${courseId}/badges/${b.id}/delete` : '/instructor' %>"
+              onsubmit="return confirm('Supprimer ce badge ?')">
+              <button type="submit" class="btn-delete">
+                <i class="fa-solid fa-trash"></i> Supprimer
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
     <% }) %>
   </div>

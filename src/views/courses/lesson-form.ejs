@@ -1,9 +1,9 @@
 <div class="section-header">
   <h2><i class="fa-solid fa-film"></i> Modifier la leçon</h2>
-  <a href="/dashboard/courses/<%= courseId %>" class="btn btn-ghost btn-sm">← Retour à la formation</a>
+  <a href="/instructor/courses/<%= courseId %>" class="btn btn-ghost btn-sm">← Retour à la formation</a>
 </div>
 
-<form action="/dashboard/courses/<%= courseId %>/modules/<%= moduleId %>/lessons/<%= lesson.id %>" method="POST" enctype="multipart/form-data" class="form card">
+<form action="/instructor/courses/<%= courseId %>/modules/<%= moduleId %>/lessons/<%= lesson.id %>" method="POST" enctype="multipart/form-data" class="form card">
   <div class="form-row">
     <div class="form-group">
       <label>Titre</label>

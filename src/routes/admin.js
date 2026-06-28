@@ -1,22 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/adminController');
-const { requireAuth } = require('../middlewares/auth');
+const { requireAdmin } = require('../middlewares/auth');
 
-router.use(requireAuth);
+router.use(requireAdmin);
 
-// Dashboard admin
-router.get('/', adminController.index);
-
-// Utilisateurs
-router.get('/users', adminController.listUsers);
-router.post('/users/:userId/toggle', adminController.toggleUser);
-
-// Paiements
-router.get('/payments', adminController.listPayments);
-
-// Validation de contenu
-router.post('/content/:contentId/approve', adminController.approveContent);
-router.post('/content/:contentId/reject', adminController.rejectContent);
+router.get('/',                            adminController.index);
+router.get('/users',                       adminController.listUsers);
+router.post('/users/:id/toggle',           adminController.toggleUser);
+router.get('/payments',                    adminController.listPayments);
+router.get('/messages',                    adminController.messages);
+router.get('/notifications',               adminController.notifications);
+router.post('/notifications/:id/read',     adminController.markNotifRead);
+router.get('/courses/pending',             adminController.pendingCourses);
+router.post('/courses/:id/approve',        adminController.approveCourse);
+router.post('/courses/:id/reject',         adminController.rejectCourse);
+router.get('/instructors',                 adminController.listInstructors);
+router.post('/instructors/:id/approve',    adminController.approveInstructor);
 
 module.exports = router;

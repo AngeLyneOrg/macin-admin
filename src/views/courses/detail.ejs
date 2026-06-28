@@ -1,3 +1,8 @@
+<%
+  // Préfixe base pour toutes les actions de cette page
+  const base = `/instructor/courses/${course.id}`;
+%>
+
 <div class="section-header">
   <div>
     <h2><%= course.title %></h2>
@@ -10,34 +15,78 @@
     </p>
   </div>
   <div class="header-actions">
-    <a href="/courses/<%= course.id %>/edit" class="btn btn-ghost btn-sm"><i class="fa-solid fa-pen"></i> Modifier</a>
-    <%- include('../partials/delete-button', { action: `/courses/${course.id}/delete`, confirmText: 'Supprimer cette formation et toutes ses données ?' }) %>
+    <a href="<%= base %>/edit" class="btn btn-ghost btn-sm">
+      <i class="fa-solid fa-pen"></i> Modifier
+    </a>
+    <%- include('../partials/delete-button', {
+      action:      `${base}/delete`,
+      confirmText: 'Supprimer cette formation et toutes ses données ?',
+      label:       'Supprimer'
+    }) %>
   </div>
 </div>
 
 <div class="course-overview card">
-  <% if (course.thumbnailUrl) { %><img src="<%= course.thumbnailUrl %>" class="overview-thumb" alt=""><% } %>
+  <% if (course.thumbnailUrl) { %>
+    <img src="<%= course.thumbnailUrl %>" class="overview-thumb" alt="">
+  <% } %>
   <div>
     <p><%= course.description || 'Aucune description.' %></p>
-    <p class="text-muted"><i class="fa-solid fa-chalkboard-user"></i> Formateur : <%= instructor ? instructor.displayName : 'Non assigné' %></p>
+    <p class="text-muted" style="margin-top:8px;">
+      <i class="fa-solid fa-chalkboard-user"></i>
+      Formateur : <%= instructor ? instructor.displayName : 'Non assigné' %>
+    </p>
+    <% if (course.price !== undefined) { %>
+      <p class="text-muted" style="margin-top:4px;">
+        <i class="fa-solid fa-tag"></i>
+        Prix : <%= course.price > 0 ? `${course.price.toLocaleString('fr-FR')} XAF` : 'Gratuit' %>
+      </p>
+    <% } %>
+    <% if (course.tags && course.tags.length) { %>
+      <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;">
+        <% course.tags.forEach(t => { %>
+          <span class="badge badge-muted"><%= t %></span>
+        <% }) %>
+      </div>
+    <% } %>
   </div>
 </div>
 
-<div class="section-header">
-  <h3>Modules &amp; Contenu</h3>
+<!-- ── Badges de cette formation ── -->
+<div class="section-header" style="margin-top:24px;">
+  <h3><i class="fa-solid fa-medal" style="color:var(--gold);"></i> Badges de cette formation</h3>
+  <a href="<%= base %>/badges/new" class="btn btn-ghost btn-sm">
+    <i class="fa-solid fa-plus"></i> Ajouter un badge
+  </a>
 </div>
+
+<!-- ── Modules & Contenu ── -->
+<div class="section-header" style="margin-top:8px;">
+  <h3><i class="fa-solid fa-layer-group"></i> Modules &amp; Contenu</h3>
+</div>
+
+<% if (modules.length === 0) { %>
+  <div class="card" style="padding:32px;text-align:center;color:var(--text-muted);">
+    <i class="fa-solid fa-layer-group fa-2x" style="margin-bottom:12px;opacity:.3;"></i>
+    <p>Aucun module. Crée le premier module ci-dessous.</p>
+  </div>
+<% } %>
 
 <% modules.forEach(function(mod) { %>
   <div class="module-block card">
     <div class="module-header">
-      <h4>Module <%= mod.order %> — <%= mod.title %></h4>
-      <%- include('../partials/delete-button', { action: `/courses/${course.id}/modules/${mod.id}/delete`, confirmText: 'Supprimer ce module et tout son contenu ?', label: 'Supprimer le module' }) %>
+      <h4><i class="fa-solid fa-folder"></i> Module <%= mod.order %> — <%= mod.title %></h4>
+      <%- include('../partials/delete-button', {
+        action:      `${base}/modules/${mod.id}/delete`,
+        confirmText: 'Supprimer ce module et tout son contenu ?',
+        label:       'Supprimer le module'
+      }) %>
     </div>
 
-    <!-- Leçons -->
+    <!-- ─ Leçons ─ -->
     <h5><i class="fa-solid fa-film"></i> Leçons</h5>
     <% if (mod.lessons.length === 0) { %>
-      <p class="text-muted">Aucune leçon dans ce module.</p>
+      <p class="text-muted" style="font-size:.82rem;padding:4px 0 8px;">Aucune leçon dans ce module.</p>
     <% } else { %>
       <div class="table-scroll">
         <table class="data-table">
@@ -47,16 +96,18 @@
           <tbody>
             <% mod.lessons.forEach(function(lesson) { %>
               <tr>
-                <td data-label="Ordre"><%= lesson.order %></td>
-                <td data-label="Titre"><%= lesson.title %></td>
-                <td data-label="Type"><span class="badge badge-muted"><%= lesson.type %></span></td>
-                <td data-label="Durée"><%= lesson.durationMin %> min</td>
-                <td data-label="Aperçu"><%= lesson.isPreview ? '✓' : '—' %></td>
-                <td data-label="Actions" class="actions-cell">
-                  <a href="/courses/<%= course.id %>/modules/<%= mod.id %>/lessons/<%= lesson.id %>/edit" class="btn btn-ghost btn-sm"><i class="fa-solid fa-pen"></i></a>
+                <td><%= lesson.order %></td>
+                <td><%= lesson.title %></td>
+                <td><span class="badge badge-muted"><%= lesson.type %></span></td>
+                <td><%= lesson.durationMin %> min</td>
+                <td><%= lesson.isPreview ? '✓' : '—' %></td>
+                <td class="actions-cell">
+                  <a href="<%= base %>/modules/<%= mod.id %>/lessons/<%= lesson.id %>/edit"
+                     class="btn btn-ghost btn-sm"><i class="fa-solid fa-pen"></i></a>
                   <%- include('../partials/delete-button', {
-                    action: `/courses/${course.id}/modules/${mod.id}/lessons/${lesson.id}/delete`,
-                    confirmText: 'Supprimer cette leçon ?', label: ''
+                    action:      `${base}/modules/${mod.id}/lessons/${lesson.id}/delete`,
+                    confirmText: 'Supprimer cette leçon ?',
+                    label:       ''
                   }) %>
                 </td>
               </tr>
@@ -66,12 +117,14 @@
       </div>
     <% } %>
 
+    <!-- Ajouter une leçon -->
     <details class="add-lesson-form">
       <summary><i class="fa-solid fa-plus"></i> Ajouter une leçon dans ce module</summary>
-      <form action="/courses/<%= course.id %>/modules/<%= mod.id %>/lessons" method="POST" enctype="multipart/form-data" class="form">
+      <form action="<%= base %>/modules/<%= mod.id %>/lessons"
+            method="POST" enctype="multipart/form-data" class="form">
         <div class="form-row">
           <div class="form-group">
-            <label>Titre</label>
+            <label>Titre <span class="req">*</span></label>
             <input type="text" name="title" required>
           </div>
           <div class="form-group">
@@ -99,30 +152,35 @@
           </div>
         </div>
         <div class="form-group">
-          <label>Fichier (vidéo ou PDF — upload direct vers R2)</label>
+          <label>Fichier (vidéo ou PDF — uploadé vers R2)</label>
           <input type="file" name="content" accept="video/*,.pdf">
+          <p class="form-hint">Formats acceptés : MP4, WebM, PDF. Taille max selon ta config R2.</p>
         </div>
         <div class="form-group">
           <label>Contenu texte (Markdown)</label>
-          <textarea name="articleContent" rows="4" placeholder="## Titre&#10;Texte explicatif en Markdown..."></textarea>
+          <textarea name="articleContent" rows="4"
+            placeholder="## Titre&#10;Texte explicatif en Markdown..."></textarea>
         </div>
         <div class="form-group">
-          <label>Contenu enrichi (JSON — blocs Flutter)</label>
-          <textarea name="blocksJson" rows="3" placeholder='[{"type":"text","content":"..."}]'></textarea>
-          <p class="form-hint">Optionnel. Laisse vide si tu n'en as pas besoin maintenant.</p>
+          <label>Blocs JSON (Flutter)</label>
+          <textarea name="blocksJson" rows="2"
+            placeholder='[{"type":"text","content":"..."}]'></textarea>
+          <p class="form-hint">Optionnel — laisse vide si inutile.</p>
         </div>
         <div class="form-checkbox">
           <input type="checkbox" name="isPreview" id="preview-<%= mod.id %>">
           <label for="preview-<%= mod.id %>">Leçon en aperçu gratuit</label>
         </div>
-        <button type="submit" class="btn btn-primary btn-sm">Ajouter la leçon</button>
+        <button type="submit" class="btn btn-primary btn-sm">
+          <i class="fa-solid fa-plus"></i> Ajouter la leçon
+        </button>
       </form>
     </details>
 
-    <!-- Exercices -->
+    <!-- ─ Exercices ─ -->
     <h5 style="margin-top:22px;"><i class="fa-solid fa-clipboard-question"></i> Exercices, Quiz &amp; Examens</h5>
     <% if (mod.exercises.length === 0) { %>
-      <p class="text-muted">Aucun exercice dans ce module.</p>
+      <p class="text-muted" style="font-size:.82rem;padding:4px 0 8px;">Aucun exercice dans ce module.</p>
     <% } else { %>
       <div class="table-scroll">
         <table class="data-table">
@@ -132,16 +190,18 @@
           <tbody>
             <% mod.exercises.forEach(function(ex) { %>
               <tr>
-                <td data-label="Ordre"><%= ex.order %></td>
-                <td data-label="Titre"><%= ex.title %></td>
-                <td data-label="Type"><span class="badge badge-primary"><%= ex.type %></span></td>
-                <td data-label="Questions"><%= ex.questions ? ex.questions.length : 0 %></td>
-                <td data-label="Seuil"><%= ex.passingScore %>%</td>
-                <td data-label="Actions" class="actions-cell">
-                  <a href="/courses/<%= course.id %>/modules/<%= mod.id %>/exercises/<%= ex.id %>/edit" class="btn btn-ghost btn-sm"><i class="fa-solid fa-pen"></i></a>
+                <td><%= ex.order %></td>
+                <td><%= ex.title %></td>
+                <td><span class="badge badge-primary"><%= ex.type %></span></td>
+                <td><%= ex.questions ? ex.questions.length : 0 %></td>
+                <td><%= ex.passingScore %>%</td>
+                <td class="actions-cell">
+                  <a href="<%= base %>/modules/<%= mod.id %>/exercises/<%= ex.id %>/edit"
+                     class="btn btn-ghost btn-sm"><i class="fa-solid fa-pen"></i></a>
                   <%- include('../partials/delete-button', {
-                    action: `/courses/${course.id}/modules/${mod.id}/exercises/${ex.id}/delete`,
-                    confirmText: 'Supprimer cet exercice ?', label: ''
+                    action:      `${base}/modules/${mod.id}/exercises/${ex.id}/delete`,
+                    confirmText: 'Supprimer cet exercice ?',
+                    label:       ''
                   }) %>
                 </td>
               </tr>
@@ -150,23 +210,29 @@
         </table>
       </div>
     <% } %>
-    <a href="/courses/<%= course.id %>/modules/<%= mod.id %>/exercises/new" class="btn btn-ghost btn-sm" style="margin-top:10px;">
+    <a href="<%= base %>/modules/<%= mod.id %>/exercises/new"
+       class="btn btn-ghost btn-sm" style="margin-top:10px;">
       <i class="fa-solid fa-plus"></i> Ajouter un exercice / quiz / examen
     </a>
   </div>
 <% }) %>
 
+<!-- ── Ajouter un module ── -->
 <div class="card add-module-form">
   <h4><i class="fa-solid fa-plus"></i> Ajouter un module</h4>
-  <form action="/courses/<%= course.id %>/modules" method="POST" class="form form-row">
+  <form action="<%= base %>/modules" method="POST" class="form form-row">
     <div class="form-group">
-      <label>Titre du module</label>
+      <label>Titre du module <span class="req">*</span></label>
       <input type="text" name="title" required>
     </div>
-    <div class="form-group">
+    <div class="form-group" style="max-width:100px;">
       <label>Ordre</label>
       <input type="number" name="order" value="<%= modules.length + 1 %>">
     </div>
-    <button type="submit" class="btn btn-primary">Ajouter</button>
+    <div style="display:flex;align-items:flex-end;">
+      <button type="submit" class="btn btn-primary">
+        <i class="fa-solid fa-plus"></i> Ajouter
+      </button>
+    </div>
   </form>
 </div>

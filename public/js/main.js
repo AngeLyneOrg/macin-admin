@@ -1,30 +1,18 @@
-document.addEventListener('DOMContentLoaded', () => {
-
-  // ── Flash auto-dismiss ──
-  document.querySelectorAll('.alert').forEach((el) => {
-    setTimeout(() => {
-      el.style.transition = 'opacity .4s';
-      el.style.opacity = '0';
-      setTimeout(() => el.remove(), 400);
-    }, 4000);
-  });
-
-  // ── Hamburger / Sidebar drawer ──
-  const sidebar  = document.querySelector('.sidebar');
-  const overlay  = document.querySelector('.sidebar-overlay');
-  const openBtn  = document.querySelector('.hamburger');
-  const closeBtn = document.querySelector('.sidebar-close');
+/* ── Sidebar toggle (app dashboard) ─────────────────────── */
+(function() {
+  const sidebar  = document.getElementById('sidebar');
+  const overlay  = document.getElementById('sidebarOverlay');
+  const openBtn  = document.getElementById('hamburger');
+  const closeBtn = document.getElementById('sidebarClose');
 
   function openSidebar() {
-    if (!sidebar) return;
-    sidebar.classList.add('open');
-    if (overlay) overlay.classList.add('open');
+    if (sidebar) sidebar.classList.add('open');
+    if (overlay) overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
   function closeSidebar() {
-    if (!sidebar) return;
-    sidebar.classList.remove('open');
-    if (overlay) overlay.classList.remove('open');
+    if (sidebar) sidebar.classList.remove('open');
+    if (overlay) overlay.classList.remove('active');
     document.body.style.overflow = '';
   }
 
@@ -32,14 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
   if (overlay)  overlay.addEventListener('click', closeSidebar);
 
-  // ferme sur ESC
-  document.addEventListener('keydown', (e) => {
+  // Fermer sur ESC
+  document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeSidebar();
   });
-
-  // ferme automatiquement si on redimensionne au-delà du breakpoint mobile
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 640) closeSidebar();
-  });
-
-});
+})();

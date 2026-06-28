@@ -1,7 +1,7 @@
 <div class="empty-state">
-  <div class="empty-icon"><i class="<%= icon || 'fa-solid fa-inbox' %>"></i></div>
-  <p class="empty-title"><%= title %></p>
-  <% if (typeof subtitle !== 'undefined') { %><p class="empty-subtitle"><%= subtitle %></p><% } %>
+  <div class="empty-state-icon"><i class="<%= icon || 'fa-solid fa-inbox' %>"></i></div>
+  <h3><%= title %></h3>
+  <% if (typeof subtitle !== 'undefined') { %><p><%= subtitle %></p><% } %>
   <% if (typeof ctaHref !== 'undefined') { %>
     <a href="<%= ctaHref %>" class="btn btn-primary"><%= ctaLabel %></a>
   <% } %>
